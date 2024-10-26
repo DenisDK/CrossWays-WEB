@@ -1,6 +1,7 @@
 import React from "react";
 import TripExampleItem from "./TripExampleItem";
 import { Button } from "@mui/material";
+import Link from "next/link";
 
 const TripExample = () => {
   return (
@@ -35,12 +36,11 @@ const TripExample = () => {
         />
       </div>
       <div className="text-center">
-        <Button
-          className="bg-[#5C6D67] rounded-2xl mt-20 text-lg"
-          variant="contained"
-        >
-          Sign up to see more
-        </Button>
+        <Link href={"/Sign-In"}>
+          <Button className="bg-[#5C6D67] mt-20 text-lg" variant="contained">
+            Sign up to see more
+          </Button>
+        </Link>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import { Button } from "@mui/material";
 import React from "react";
 import Nav from "./Nav";
 import Image from "next/image";
+import Link from "next/link";
 
 const Header = () => {
   return (
@@ -17,15 +18,19 @@ const Header = () => {
       </div>
       <Nav />
       <div className="">
-        <Button
-          className="mr-5 text-[#5C6D67] bg-transparent rounded-2xl"
-          variant="contained"
-        >
-          Log in
-        </Button>
-        <Button className="bg-[#5C6D67] rounded-2xl" variant="contained">
-          Join now
-        </Button>
+        <Link href={"/Sign-In"}>
+          <Button
+            className="mr-5 text-[#5C6D67] bg-transparent rounded-2xl"
+            variant="contained"
+          >
+            Sign in
+          </Button>
+        </Link>
+        <Link href={"/Sign-Up"}>
+          <Button className="bg-[#5C6D67] rounded-2xl" variant="contained">
+            Sign Up
+          </Button>
+        </Link>
       </div>
     </div>
   );
