@@ -1,14 +1,25 @@
+"use client";
+
 import { Button } from "@mui/material";
 import Link from "next/link";
 import React from "react";
-import AuthButton from "./AuthButton";
+import AuthButton from "@/components/AuthButton";
+import { useRouter } from "next/navigation";
 
 // Icons
 import { FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { IoMdLock } from "react-icons/io";
 
-const AuthComponent = ({ title, desc, rout }) => {
+// firebase
+import { signInWithGoogle } from "@/lib/signIn";
+import { signInWithFacebook } from "@/lib/signIn";
+
+const JoinNow = () => {
+  const router = useRouter();
+  const handleGoogleSignIn = () => signInWithGoogle(router);
+  const handleFacebookSignIn = () => signInWithFacebook(router);
+
   return (
     <div className="flex flex-col justify-center items-center min-h-screen">
       <div className="">
@@ -19,36 +30,26 @@ const AuthComponent = ({ title, desc, rout }) => {
           />
         </div>
         <h2 className="text-[#876447] text-center text-3xl font-bold py-3">
-          {title}
+          Join Now
         </h2>
-        <p className="text-[#876447] text-center">
-          Welcome, please {desc} to continue
-        </p>
+        <p className="text-[#876447] text-center">Join our community now!</p>
         <AuthButton
           providerName={"Google"}
           providerIcon={<FcGoogle size={20} />}
-          text={title}
+          signInWithProvider={handleGoogleSignIn}
         />
         <AuthButton
           providerName={"Facebook"}
           providerIcon={<FaFacebook className="text-cyan-700" size={20} />}
-          text={title}
+          signInWithProvider={handleFacebookSignIn}
         />
-        <div className="flex justify-between items-center">
+        <div className="text-right">
           <Link href={"/"}>
             <Button
-              className="text-[#876447] font-bold  hover:bg-opacity-10 hover:bg-[#876447] mt-3"
+              className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447] mt-3"
               variant="text"
             >
               Home
-            </Button>
-          </Link>
-          <Link href={rout}>
-            <Button
-              className="text-[#876447] font-bold  hover:bg-opacity-10 hover:bg-[#876447] mt-3"
-              variant="text"
-            >
-              {desc}
             </Button>
           </Link>
         </div>
@@ -57,4 +58,4 @@ const AuthComponent = ({ title, desc, rout }) => {
   );
 };
 
-export default AuthComponent;
+export default JoinNow;

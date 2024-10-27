@@ -36,7 +36,7 @@ const TripExample = () => {
         />
       </div>
       <div className="text-center">
-        <Link href={"/Sign-In"}>
+        <Link href={"/Join-Now"}>
           <Button className="bg-[#5C6D67] mt-20 text-lg" variant="contained">
             Sign up to see more
           </Button>

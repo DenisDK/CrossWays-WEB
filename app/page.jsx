@@ -1,9 +1,9 @@
-import AboutUs from "@/components/AboutUs";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import SeparatorContent from "@/components/SeparatorContent";
-import TitleImg from "@/components/TItleImg";
-import TripExmple from "@/components/TripExample";
+import AboutUs from "@/components/WelcomePage/AboutUs";
+import Header from "@/components/Header/Header";
+import TitleImg from "@/components/WelcomePage/TitleImg";
+import TripExmple from "@/components/WelcomePage/TripExample/TripExample";
+import Footer from "@/components/Footer/Footer";
+import SeparatorContent from "@/components/WelcomePage/SeparatorContent/SeparatorContent";
 
 export default function Home() {
   return (
