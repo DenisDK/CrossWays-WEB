@@ -76,30 +76,30 @@ const UserProfile = () => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem className="">
-              <Link href={"/Main"}>
+            <Link href={"/Main"}>
+              <MenuItem className="">
                 <ListItemIcon>
                   <FaUserCircle />
                 </ListItemIcon>
                 My profile
-              </Link>
-            </MenuItem>
-            <MenuItem className="">
-              <Link href={"/Main"}>
+              </MenuItem>
+            </Link>
+            <Link href={"/Main"}>
+              <MenuItem className="">
                 <ListItemIcon>
                   <GiCommercialAirplane />
                 </ListItemIcon>
                 My trips
-              </Link>
-            </MenuItem>
-            <MenuItem className="">
-              <Link href={"/Main"}>
+              </MenuItem>
+            </Link>
+            <Link href={"/Main"}>
+              <MenuItem className="">
                 <ListItemIcon>
                   <RiVipCrownFill />
                 </ListItemIcon>
                 VIP status
-              </Link>
-            </MenuItem>
+              </MenuItem>
+            </Link>
             <MenuItem
               className="text-red-700 font-bold"
               onClick={handleSignOut}
