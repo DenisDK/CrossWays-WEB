@@ -4,20 +4,16 @@ import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-
-// Icons
 import { IoIosArrowDown } from "react-icons/io";
 import { RiVipCrownFill } from "react-icons/ri";
 import { PiSignOutBold } from "react-icons/pi";
 import { FaUserCircle } from "react-icons/fa";
 import { GiCommercialAirplane } from "react-icons/gi";
-
-// firebase
 import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { ListItemIcon } from "@mui/material";
 import Link from "next/link";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
@@ -25,28 +21,35 @@ const UserProfile = () => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+    const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser({
           displayName: currentUser.displayName,
           photoURL: currentUser.photoURL,
         });
 
-        // Fetch the user's profile data from Firestore
+        // Підписка на зміни користувача в Firestore
         const userDocRef = doc(db, "Users", currentUser.uid);
-        const userDoc = await getDoc(userDocRef);
+        const unsubscribeFirestore = onSnapshot(userDocRef, (userDoc) => {
+          if (userDoc.exists()) {
+            setProfileImage(userDoc.data().profileImage);
+            setUser((prev) => ({
+              ...prev,
+              displayName: userDoc.data().name || currentUser.displayName, // Оновлення displayName, якщо змінилося
+            }));
+          }
+        });
 
-        if (userDoc.exists()) {
-          // Set the profile image from Firestore
-          setProfileImage(userDoc.data().profileImage);
-        }
+        return () => {
+          unsubscribeFirestore(); // Відписка від Firestore
+        };
       } else {
         setUser(null);
         setProfileImage(null);
       }
     });
 
-    return () => unsubscribe();
+    return () => unsubscribeAuth(); // Відписка від auth
   }, []);
 
   const handleMenuOpen = (event) => {
@@ -72,7 +75,7 @@ const UserProfile = () => {
           >
             <Avatar
               alt={user.displayName}
-              src={profileImage || user.photoURL || "/defaultAvatar.png"} // Use Firestore image first, then fallback to Firebase photoURL
+              src={profileImage || user.photoURL || "/defaultAvatar.png"}
             />
             <span className="ml-2 text-[#876447] text-xl">
               {user.displayName || "User"}
