@@ -56,17 +56,11 @@ const Header = () => {
       )}
 
       {isUser ? <Nav /> : ""}
+
       <div>
         {isUser ? (
           <div className="flex items-center">
             <ProfileInfo />
-            {/* <Button
-              onClick={signOutUser}
-              className="mr-5 ml-5 bg-[#5C6D67] rounded-2xl"
-              variant="contained"
-            >
-              Sign Out
-            </Button> */}
           </div>
         ) : (
           <div className="">

@@ -13,24 +13,36 @@ import { FaUserCircle } from "react-icons/fa";
 import { GiCommercialAirplane } from "react-icons/gi";
 
 // firebase
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { ListItemIcon } from "@mui/material";
 import Link from "next/link";
+import { doc, getDoc } from "firebase/firestore";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
+  const [profileImage, setProfileImage] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser({
           displayName: currentUser.displayName,
           photoURL: currentUser.photoURL,
         });
+
+        // Fetch the user's profile data from Firestore
+        const userDocRef = doc(db, "Users", currentUser.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          // Set the profile image from Firestore
+          setProfileImage(userDoc.data().profileImage);
+        }
       } else {
         setUser(null);
+        setProfileImage(null);
       }
     });
 
@@ -51,7 +63,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="flex items-center ">
+    <div className="flex items-center">
       {user ? (
         <>
           <div
@@ -60,7 +72,7 @@ const UserProfile = () => {
           >
             <Avatar
               alt={user.displayName}
-              src={user.photoURL || "/noavatar.png"}
+              src={profileImage || user.photoURL || "/defaultAvatar.png"} // Use Firestore image first, then fallback to Firebase photoURL
             />
             <span className="ml-2 text-[#876447] text-xl">
               {user.displayName || "User"}
@@ -76,8 +88,8 @@ const UserProfile = () => {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <Link href={"/Main"}>
-              <MenuItem className="">
+            <Link href={"/Profile"}>
+              <MenuItem>
                 <ListItemIcon>
                   <FaUserCircle />
                 </ListItemIcon>
@@ -85,7 +97,7 @@ const UserProfile = () => {
               </MenuItem>
             </Link>
             <Link href={"/Main"}>
-              <MenuItem className="">
+              <MenuItem>
                 <ListItemIcon>
                   <GiCommercialAirplane />
                 </ListItemIcon>
@@ -93,7 +105,7 @@ const UserProfile = () => {
               </MenuItem>
             </Link>
             <Link href={"/Main"}>
-              <MenuItem className="">
+              <MenuItem>
                 <ListItemIcon>
                   <RiVipCrownFill />
                 </ListItemIcon>
