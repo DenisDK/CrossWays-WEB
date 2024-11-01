@@ -9,8 +9,9 @@ import Link from "next/link";
 // Імпорт з Firebase
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-import { signOutUser } from "@/lib/signOut";
+// import { signOutUser } from "@/lib/signOut";
 import ProfileInfo from "./ProfileInfo";
+import LanguageSelector from "./LanguageSelector/LanguageSelector";
 
 const Header = () => {
   const [isUser, setIsUser] = useState(auth.currentUser);
@@ -59,16 +60,15 @@ const Header = () => {
 
       <div>
         {isUser ? (
-          <div className="flex items-center">
+          <div className="flex justify-between items-center">
+            <LanguageSelector />
             <ProfileInfo />
           </div>
         ) : (
           <div className="">
+            <LanguageSelector />
             <Link href="/Join-Now">
-              <Button
-                className="mr-5 bg-[#5C6D67] rounded-2xl"
-                variant="contained"
-              >
+              <Button className="bg-[#5C6D67] ml-5" variant="contained">
                 Join Now
               </Button>
             </Link>

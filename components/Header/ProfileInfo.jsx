@@ -4,15 +4,19 @@ import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
+import Link from "next/link";
+import { ListItemIcon } from "@mui/material";
+
+// Icons
 import { IoIosArrowDown } from "react-icons/io";
 import { RiVipCrownFill } from "react-icons/ri";
 import { PiSignOutBold } from "react-icons/pi";
 import { FaUserCircle } from "react-icons/fa";
 import { GiCommercialAirplane } from "react-icons/gi";
+
+// Firebase
 import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import { ListItemIcon } from "@mui/material";
-import Link from "next/link";
 import { doc, onSnapshot } from "firebase/firestore";
 
 const UserProfile = () => {
@@ -66,7 +70,7 @@ const UserProfile = () => {
   };
 
   return (
-    <div className="flex items-center">
+    <div className="flex items-center ml-5">
       {user ? (
         <>
           <div
@@ -75,7 +79,7 @@ const UserProfile = () => {
           >
             <Avatar
               alt={user.displayName}
-              src={profileImage || user.photoURL || "/defaultAvatar.png"}
+              src={profileImage || user.photoURL || "/noavatar.png"}
             />
             <span className="ml-2 text-[#876447] text-xl">
               {user.displayName || "User"}
