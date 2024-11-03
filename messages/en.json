@@ -1,6 +1,28 @@
 {
-  "HomePage": {
-    "title": "Hello world! gwgwgrwgwg",
-    "about": "Go to the about page"
+  "WelcomePage": {
+    "titleSpan": "Find your travel",
+    "title": "soulmate fast & easily",
+    "catchphrase": "Cross ways and explore the world together",
+    "aboutTitle": "About us",
+    "about": "CrossWays is an international platform created to help people struggling with finding company for their trips or feeling desire to improve its planning. Developed by the group of particulary stubborn students, CrossWays has to offer you a lot of useful tools for satisfying work and travel planning. Keep reading to know more."
+  },
+  "SeparatorContent": {
+    "title": "Top opportunities for you",
+    "tripTitle": "Choose your dream trip",
+    "tripParagraph": "We will help you with the \"boring\" stuff!",
+    "friendsTitle": "Finding friends",
+    "friendsParagraph": "Meet people to travel together!",
+    "matchingTitle": "Travel matching",
+    "matchingParagraph": "Filter travels and people by our special tool!",
+    "adviceTitle": "Free travel advice",
+    "adviceParagraph": "We will always help you out!"
+  },
+  "TripExamples": {
+    "title": "Choose your dream trip",
+    "firstTripTitleExample": "Paris weekend",
+    "secondTripTitleExample": "Month in Kharkiv",
+    "thirdTripTitleExample": "Month in Kharkiv",
+    "tripPriceExample": "/person",
+    "signUpButton": "Sign up to see more"
   }
 }
