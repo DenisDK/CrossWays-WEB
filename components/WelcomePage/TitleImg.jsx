@@ -1,7 +1,9 @@
 import Image from "next/image";
 import React from "react";
+import { useTranslations } from "next-intl";
 
 const TitleImg = () => {
+  const t = useTranslations("HomePage");
   return (
     <div className="max-w-screen-xl mx-auto relative mt-12">
       <Image
@@ -17,7 +19,8 @@ const TitleImg = () => {
         soulmate fast & easily
       </h1>
       <h3 className="absolute top-[365px] left-[360px] transform -translate-x-1/2 -translate-y-1/2 mt-10 z-10 text-white px-4 text-3xl">
-        Cross ways and explore the world together
+        {/* Cross ways and explore the world together */}
+        {t("title")}
       </h3>
     </div>
   );

@@ -1,7 +1,10 @@
 "use client";
 
 import { Button } from "@mui/material";
-import Link from "next/link";
+// import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
+
 import React from "react";
 import AuthButton from "@/components/AuthButton";
 import { useRouter } from "next/navigation";

@@ -1,7 +1,9 @@
 import React from "react";
 import TripExampleItem from "./TripExampleItem";
 import { Button } from "@mui/material";
-import Link from "next/link";
+// import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 const TripExample = () => {
   return (

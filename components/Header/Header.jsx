@@ -4,7 +4,9 @@ import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Nav from "./Nav/Nav";
 import Image from "next/image";
-import Link from "next/link";
+// import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 // Імпорт з Firebase
 import { auth } from "@/lib/firebase";

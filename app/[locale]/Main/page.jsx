@@ -3,10 +3,11 @@ import Header from "@/components/Header/Header";
 import { Button } from "@mui/material";
 import Image from "next/image";
 import React, { useState } from "react";
+import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/routing";
 
 // firebase
 import { auth } from "@/lib/firebase";
-import Link from "next/link";
 
 const MainPage = () => {
   const [isUser, setIsUser] = useState(auth.currentUser);
