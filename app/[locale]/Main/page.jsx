@@ -10,6 +10,7 @@ import { Link } from "@/i18n/routing";
 import { auth } from "@/lib/firebase";
 
 const MainPage = () => {
+  const t = useTranslations("MainPage");
   const [isUser, setIsUser] = useState(auth.currentUser);
   return (
     <div>
@@ -24,7 +25,8 @@ const MainPage = () => {
         />
         <div className="absolute inset-0 bg-[#8B6857] opacity-30 z-0 rounded-[30px]"></div>
         <h2 className="absolute top-[300px] left-[350px]  text-7xl transform -translate-x-1/2 -translate-y-1/2 z-10 text-white font-bold px-4">
-          Welcome back!
+          {/* Welcome back! */}
+          {t("title")}
         </h2>
         {isUser ? (
           <Link href={"/"}>
@@ -32,7 +34,8 @@ const MainPage = () => {
               variant="contained"
               className="absolute top-[400px] left-[180px] bg-white text-[#876447] transform -translate-x-1/2 -translate-y-1/2 z-10 font-bold"
             >
-              Create a new trip
+              {/* Create a new trip */}
+              {t("createTripButton")}
             </Button>
           </Link>
         ) : (
@@ -41,7 +44,8 @@ const MainPage = () => {
               variant="contained"
               className="absolute top-[400px] left-[180px] bg-white text-[#876447] transform -translate-x-1/2 -translate-y-1/2 z-10 font-bold"
             >
-              Create a new trip
+              {/* Create a new trip */}
+              {t("createTripButton")}
             </Button>
           </Link>
         )}
