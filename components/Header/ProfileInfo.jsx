@@ -4,7 +4,14 @@ import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-// import Link from "next/link";
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  Button,
+} from "@mui/material";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
@@ -16,16 +23,20 @@ import { RiVipCrownFill } from "react-icons/ri";
 import { PiSignOutBold } from "react-icons/pi";
 import { FaUserCircle } from "react-icons/fa";
 import { GiCommercialAirplane } from "react-icons/gi";
+import { MdDelete } from "react-icons/md";
 
 // Firebase
 import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, onSnapshot } from "firebase/firestore";
+import { deleteUserAndData } from "@/lib/deleteUser";
 
 const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openSignOutDialog, setOpenSignOutDialog] = useState(false);
 
   useEffect(() => {
     const unsubscribeAuth = onAuthStateChanged(auth, (currentUser) => {
@@ -35,20 +46,19 @@ const UserProfile = () => {
           photoURL: currentUser.photoURL,
         });
 
-        // Підписка на зміни користувача в Firestore
         const userDocRef = doc(db, "Users", currentUser.uid);
         const unsubscribeFirestore = onSnapshot(userDocRef, (userDoc) => {
           if (userDoc.exists()) {
             setProfileImage(userDoc.data().profileImage);
             setUser((prev) => ({
               ...prev,
-              displayName: userDoc.data().name || currentUser.displayName, // Оновлення displayName, якщо змінилося
+              displayName: userDoc.data().name || currentUser.displayName,
             }));
           }
         });
 
         return () => {
-          unsubscribeFirestore(); // Відписка від Firestore
+          unsubscribeFirestore();
         };
       } else {
         setUser(null);
@@ -56,7 +66,7 @@ const UserProfile = () => {
       }
     });
 
-    return () => unsubscribeAuth(); // Відписка від auth
+    return () => unsubscribeAuth();
   }, []);
 
   const handleMenuOpen = (event) => {
@@ -65,6 +75,15 @@ const UserProfile = () => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleDeleteAccount = async () => {
+    const result = await deleteUserAndData();
+    if (result.success) {
+      handleMenuClose();
+    } else {
+      console.error("Failed to delete account:", result.error);
+    }
   };
 
   const handleSignOut = async () => {
@@ -124,7 +143,16 @@ const UserProfile = () => {
             </Link>
             <MenuItem
               className="text-red-700 font-bold"
-              onClick={handleSignOut}
+              onClick={() => setOpenDeleteDialog(true)}
+            >
+              <ListItemIcon>
+                <MdDelete className="text-red-700 font-bold" />
+              </ListItemIcon>
+              Delete Account
+            </MenuItem>
+            <MenuItem
+              className="text-red-700 font-bold"
+              onClick={() => setOpenSignOutDialog(true)}
             >
               <ListItemIcon>
                 <PiSignOutBold className="text-red-700 font-bold" />
@@ -132,6 +160,67 @@ const UserProfile = () => {
               Sign Out
             </MenuItem>
           </Menu>
+
+          {/* Dialog for deleting account */}
+          <Dialog
+            open={openDeleteDialog}
+            onClose={() => setOpenDeleteDialog(false)}
+          >
+            <DialogTitle>Confirm Delete Account</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete your account? This action is
+                irreversible.
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => setOpenDeleteDialog(false)}
+                className="font-bold"
+                color="success"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleDeleteAccount}
+                className="font-bold"
+                color="error"
+                autoFocus
+              >
+                Confirm
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          {/* Dialog for signing out */}
+          <Dialog
+            open={openSignOutDialog}
+            onClose={() => setOpenSignOutDialog(false)}
+          >
+            <DialogTitle>Confirm Sign Out</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to sign out?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button
+                onClick={() => setOpenSignOutDialog(false)}
+                className="font-bold"
+                color="success"
+              >
+                Cancel
+              </Button>
+              <Button
+                onClick={handleSignOut}
+                className="font-bold"
+                color="error"
+                autoFocus
+              >
+                Sign Out
+              </Button>
+            </DialogActions>
+          </Dialog>
         </>
       ) : (
         <>

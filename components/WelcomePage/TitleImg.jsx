@@ -14,8 +14,8 @@ const TitleImg = () => {
         height={700}
       />
       <div className="absolute inset-0 bg-[#8B6857] opacity-30 z-0 rounded-[30px]"></div>
-      <h1 className="absolute top-[300px] left-[450px]  text-7xl transform -translate-x-1/2 -translate-y-1/2 z-10 text-white font-bold px-4">
-        <span className="block ">
+      <h1 className="absolute top-[300px] left-[545px]  text-7xl transform -translate-x-1/2 -translate-y-1/2 z-10 text-white font-bold px-4">
+        <span className="block w-[950px] ">
           {/* Find your travel */}
           {t("titleSpan")}
         </span>
