@@ -24,5 +24,9 @@
     "thirdTripTitleExample": "Month in Kharkiv",
     "tripPriceExample": "/person",
     "signUpButton": "Sign up to see more"
+  },
+  "MainPage": {
+    "title": "Welcome back!",
+    "createTripButton": "Create a new trip"
   }
 }
