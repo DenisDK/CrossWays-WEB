@@ -133,7 +133,7 @@ const UserProfile = () => {
                 My trips
               </MenuItem>
             </Link>
-            <Link href={"/Main"}>
+            <Link href={"/Premium"}>
               <MenuItem>
                 <ListItemIcon>
                   <RiVipCrownFill />
