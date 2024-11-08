@@ -1,5 +1,6 @@
 import React from "react";
 import { FaCheck } from "react-icons/fa6";
+import GooglePayButtonComponent from "./GooglePayButtonComponent";
 
 const CardPremium = () => {
   return (
@@ -43,9 +44,7 @@ const CardPremium = () => {
         </p>
       </div>
       <div className="text-center">
-        <span className="text-white text-2xl bg-[#5C6D67] px-5 py-2 rounded-lg">
-          Now active
-        </span>
+        <GooglePayButtonComponent />
       </div>
     </div>
   );

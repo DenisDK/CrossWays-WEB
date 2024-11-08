@@ -43,7 +43,7 @@ const ProfilePage = () => {
   const [nickname, setNickname] = useState("");
   const [aboutMe, setAboutMe] = useState("");
   const [gender, setGender] = useState("");
-  const [birthday, setBirthday] = useState(dayjs("2005-04-11"));
+  const [birthday, setBirthday] = useState(dayjs("")); //2005-04-11
   const [isPrivate, setIsPrivate] = useState(false);
   const [error, setError] = useState("");
   const [errors, setErrors] = useState({
