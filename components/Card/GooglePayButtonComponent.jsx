@@ -21,7 +21,6 @@ const GooglePayButtonComponent = () => {
 
   return (
     <GooglePayButton
-      className="mt-5"
       environment="TEST"
       paymentRequest={{
         apiVersion: 2,

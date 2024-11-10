@@ -33,14 +33,16 @@ const Nav = () => {
             FAQ
           </Button>
         </li>
-        <li>
-          <Button
-            className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
-            variant="text"
-          >
-            Search
-          </Button>
-        </li>
+        <Link href="/Users">
+          <li>
+            <Button
+              className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
+              variant="text"
+            >
+              Search
+            </Button>
+          </li>
+        </Link>
       </ul>
     </nav>
   );

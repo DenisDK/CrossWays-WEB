@@ -1,4 +1,5 @@
 "use client";
+import { Timestamp } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import Header from "@/components/Header/Header";
 import {
@@ -43,7 +44,8 @@ const ProfilePage = () => {
   const [nickname, setNickname] = useState("");
   const [aboutMe, setAboutMe] = useState("");
   const [gender, setGender] = useState("");
-  const [birthday, setBirthday] = useState(dayjs("")); //2005-04-11
+  // const [birthday, setBirthday] = useState(dayjs("")); // Ініціалізація порожньою датою
+  const [birthday, setBirthday] = useState(null); // Ініціалізація порожньою датою
   const [isPrivate, setIsPrivate] = useState(false);
   const [error, setError] = useState("");
   const [errors, setErrors] = useState({
@@ -73,7 +75,11 @@ const ProfilePage = () => {
           setNickname(data.nickname);
           setAboutMe(data.aboutMe);
           setGender(data.gender);
-          setBirthday(dayjs(data.birthday));
+          // setBirthday(dayjs(data.birthday));
+          // Встановлюємо дату народження правильно
+          if (data.birthday) {
+            setBirthday(dayjs(data.birthday.toDate())); // Перетворюємо Timestamp на dayjs
+          }
           setIsPrivate(data.isPrivate);
         }
       } else {
@@ -176,7 +182,8 @@ const ProfilePage = () => {
           nickname,
           aboutMe,
           gender,
-          birthday: birthday.toISOString(),
+          // Зберігаємо дату як Timestamp
+          birthday: Timestamp.fromDate(birthday.toDate()),
           isPrivate,
         },
         { merge: true }
@@ -281,73 +288,66 @@ const ProfilePage = () => {
                   variant="standard"
                   fullWidth
                   value={nickname}
-                  onChange={(e) => setNickname(e.target.value)}
                   error={errors.nickname}
-                  helperText={errors.nickname ? "Nickname is required." : ""}
+                  onChange={(e) => setNickname(e.target.value)}
                 />
               </Tooltip>
             </div>
-            <TextField
-              label="About Me"
-              multiline
-              rows={4}
-              variant="standard"
-              fullWidth
-              value={aboutMe}
-              onChange={(e) => setAboutMe(e.target.value)}
-            />
-            <div className="flex items-end justify-between">
-              <FormControl>
-                <FormLabel>Gender</FormLabel>
-                <RadioGroup
-                  row
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                >
-                  <FormControlLabel
-                    value="male"
-                    control={<Radio />}
-                    label="Male"
-                  />
-                  <FormControlLabel
-                    value="female"
-                    control={<Radio />}
-                    label="Female"
-                  />
-                </RadioGroup>
-              </FormControl>
-              <FormControlLabel
-                control={
-                  <Switch
-                    checked={isPrivate}
-                    onChange={(e) => setIsPrivate(e.target.checked)}
-                  />
-                }
-                label="Private Account"
+
+            <Tooltip title="A brief description of yourself">
+              <TextField
+                label="About Me"
+                variant="standard"
+                fullWidth
+                multiline
+                value={aboutMe}
+                onChange={(e) => setAboutMe(e.target.value)}
               />
-            </div>
+            </Tooltip>
+
+            <FormControl error={errors.gender}>
+              <FormLabel>Gender</FormLabel>
+              <RadioGroup
+                row
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+              >
+                <FormControlLabel
+                  value="Male"
+                  control={<Radio />}
+                  label="Male"
+                />
+                <FormControlLabel
+                  value="Female"
+                  control={<Radio />}
+                  label="Female"
+                />
+              </RadioGroup>
+            </FormControl>
+
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DesktopDatePicker
-                label="Birthday"
-                inputFormat="MM/DD/YYYY"
+                label="Date of Birth"
                 value={birthday}
                 onChange={(newValue) => setBirthday(newValue)}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    error={errors.birthday}
-                    helperText={
-                      errors.birthday
-                        ? "You must be at least 18 years old."
-                        : ""
-                    }
-                  />
-                )}
+                renderInput={(params) => <TextField {...params} />}
               />
             </LocalizationProvider>
+
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={isPrivate}
+                  onChange={(e) => setIsPrivate(e.target.checked)}
+                />
+              }
+              label="Private Profile"
+            />
+
             <Button
               variant="contained"
               color="primary"
+              fullWidth
               onClick={saveProfileData}
             >
               Save Changes
@@ -355,19 +355,13 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+
       <Snackbar
         open={snackBarOpen}
         autoHideDuration={3000}
         onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
       >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={alertSeverity}
-          sx={{ width: "100%" }}
-        >
-          {alertMessage}
-        </Alert>
+        <Alert severity={alertSeverity}>{alertMessage}</Alert>
       </Snackbar>
     </div>
   );
