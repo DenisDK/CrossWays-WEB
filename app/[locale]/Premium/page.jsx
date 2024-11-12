@@ -5,12 +5,14 @@ import CardStandard from "@/components/Card/CardStandard";
 import Header from "@/components/Header/Header";
 import React, { useEffect, useState } from "react";
 import CircularProgress from "@mui/material/CircularProgress";
+import { useTranslations } from "next-intl";
 
 // firebase
 import { auth, db } from "@/lib/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import CardThank from "@/components/Card/CardThank";
 const PremiumPage = () => {
+  const t = useTranslations("Premium");
   const [isPremium, setIsPremium] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -65,10 +67,11 @@ const PremiumPage = () => {
         </div>
       ) : (
         <div className="max-w-screen-lg mx-auto mt-32">
-          <h2 className="text-[#876447] text-6xl font-bold">Available plans</h2>
+          <h2 className="text-[#876447] text-6xl font-bold">
+            {t("plansTitle")}
+          </h2>
           <h3 className="text-[#876447] text-3xl mt-3">
-            There are several plans for using CrossWays. Please choose the one
-            that suits you best.
+            {t("plansParagraph")}
           </h3>
         </div>
       )}

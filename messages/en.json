@@ -48,5 +48,9 @@
     "alreadyTakenMessage": "This Nickname is already taken. Please choose another one.",
     "successMessage": "Changes saved successfully.",
     "errorMessage": "Changes were not saved due to an error."
+  },
+  "Premium": {
+    "plansTitle": "Available plans",
+    "plansParagraph": "There are several plans for using CrossWays. Please choose the one that suits you best."
   }
 }
