@@ -35,8 +35,10 @@ import {
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Alert from "@mui/material/Alert";
+import { useTranslations } from "next-intl";
 
 const ProfilePage = () => {
+  const t = useTranslations("Profile");
   const [user, setUser] = useState(null);
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -153,11 +155,9 @@ const ProfilePage = () => {
 
   const saveProfileData = async () => {
     if (!validateFields()) {
-      setError(
-        "Please fill in all required fields (Nickname, Gender, Date of Birth)."
-      );
+      setError(t("emptyFieldsError"));
       setAlertSeverity("error");
-      setAlertMessage("Changes were not saved. Please correct the errors.");
+      setAlertMessage(t("correctErrorsMessage"));
       setSnackBarOpen(true);
       return;
     }
@@ -166,9 +166,7 @@ const ProfilePage = () => {
     const isAvailable = await checkNicknameAvailability(nickname);
     if (!isAvailable) {
       setAlertSeverity("error");
-      setAlertMessage(
-        "This Nickname is already taken. Please choose another one."
-      );
+      setAlertMessage(t("alreadyTakenMessage"));
       setSnackBarOpen(true);
       return;
     }
@@ -203,11 +201,11 @@ const ProfilePage = () => {
 
       setError("");
       setAlertSeverity("success");
-      setAlertMessage("Changes saved successfully.");
+      setAlertMessage(t("successMessage"));
       setSnackBarOpen(true);
     } catch (error) {
       setAlertSeverity("error");
-      setAlertMessage("Changes were not saved due to an error.");
+      setAlertMessage(t("errorMessage"));
       setSnackBarOpen(true);
     }
   };
@@ -258,14 +256,17 @@ const ProfilePage = () => {
             <label htmlFor="file-upload">
               <Button variant="contained" color="primary" component="span">
                 <FaCloudUploadAlt size={17} className="mr-2" />
-                upload photo
+                {/* upload photo */}
+                {t("addProfilePhoto")}
               </Button>
             </label>
             <Typography variant="h5" className="mt-5 font-bold">
-              {profileData?.name || "User Name"}
+              {/* {profileData?.name || "User Name"} */}
+              {profileData?.name || t("userName")}
             </Typography>
             <Typography variant="h6" className="font-bold">
-              {profileData?.nickname || "NickName"}
+              {/* {profileData?.nickname || "NickName"} */}
+              {profileData?.nickname || t("userNickname")}
             </Typography>
             <Rating className="mt-2" name="read-only" value={5} readOnly />
           </div>
@@ -273,18 +274,20 @@ const ProfilePage = () => {
           <div className="flex flex-col flex-grow gap-6 pl-8">
             {error && <Typography color="error">{error}</Typography>}
             <div className="flex gap-6">
-              <Tooltip title="You can specify the name and surname">
+              <Tooltip title={t("userNameTooltip")}>
                 <TextField
-                  label="Name"
+                  // label="Name"
+                  label={t("userName")}
                   variant="standard"
                   fullWidth
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </Tooltip>
-              <Tooltip title="Used for indexing and searching">
+              <Tooltip title={t("userNicknameTooltip")}>
                 <TextField
-                  label="Nickname"
+                  // label="Nickname"
+                  label={t("userNickname")}
                   variant="standard"
                   fullWidth
                   value={nickname}
@@ -294,9 +297,10 @@ const ProfilePage = () => {
               </Tooltip>
             </div>
 
-            <Tooltip title="A brief description of yourself">
+            <Tooltip title={t("userAboutMeTooltip")}>
               <TextField
-                label="About Me"
+                // label="About Me"
+                label={t("userAboutMe")}
                 variant="standard"
                 fullWidth
                 multiline
@@ -306,7 +310,10 @@ const ProfilePage = () => {
             </Tooltip>
 
             <FormControl error={errors.gender}>
-              <FormLabel>Gender</FormLabel>
+              <FormLabel>
+                {/* Gender */}
+                {t("userGender")}
+              </FormLabel>
               <RadioGroup
                 row
                 value={gender}
@@ -315,19 +322,22 @@ const ProfilePage = () => {
                 <FormControlLabel
                   value="Male"
                   control={<Radio />}
-                  label="Male"
+                  // label="Male"
+                  label={t("userGenderMale")}
                 />
                 <FormControlLabel
                   value="Female"
                   control={<Radio />}
-                  label="Female"
+                  // label="Female"
+                  label={t("userGenderFemale")}
                 />
               </RadioGroup>
             </FormControl>
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DesktopDatePicker
-                label="Date of Birth"
+                // label="Date of Birth"
+                label={t("userDateOfBirth")}
                 value={birthday}
                 onChange={(newValue) => setBirthday(newValue)}
                 renderInput={(params) => <TextField {...params} />}
@@ -341,7 +351,8 @@ const ProfilePage = () => {
                   onChange={(e) => setIsPrivate(e.target.checked)}
                 />
               }
-              label="Private Profile"
+              // label="Private Profile"
+              label={t("userPrivateAccountSwitch")}
             />
 
             <Button
@@ -350,7 +361,8 @@ const ProfilePage = () => {
               fullWidth
               onClick={saveProfileData}
             >
-              Save Changes
+              {/* Save Changes */}
+              {t("saveChangesButton")}
             </Button>
           </div>
         </div>

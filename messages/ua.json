@@ -28,5 +28,25 @@
   "MainPage": {
     "title": "Ласкаво просимо!",
     "createTripButton": "Створити нову подорож"
+  },
+  "Profile": {
+    "addProfilePhoto": "завантажити фото",
+    "userName": "Прізвище та ім'я",
+    "userNameTooltip": "Ви можете вказати ім'я та прізвище",
+    "userNickname": "Псевдонім",
+    "userNicknameTooltip": "Використовується для індексації та пошуку",
+    "userAboutMe": "Про себе",
+    "userAboutMeTooltip": "Короткий опис себе",
+    "userGender": "Стать",
+    "userGenderMale": "Чоловіча",
+    "userGenderFemale": "Жіноча",
+    "userPrivateAccountSwitch": "Приватний аккаунт",
+    "userDateOfBirth": "День народження",
+    "saveChangesButton": "зберегти зміни",
+    "emptyFieldsError": "Будь ласка, заповніть усі обов'язкові поля (прізвище, стать, дата народження).",
+    "correctErrorsMessage": "Зміни не збережено. Будь ласка, виправте помилки.",
+    "alreadyTakenMessage": "Цей псевдонім уже зайнятий. Виберіть інший.",
+    "successMessage": "Зміни успішно збережено.",
+    "errorMessage": "Зміни не збережено через помилку."
   }
 }

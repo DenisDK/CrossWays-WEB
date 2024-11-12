@@ -28,5 +28,25 @@
   "MainPage": {
     "title": "Welcome back!",
     "createTripButton": "Create a new trip"
+  },
+  "Profile": {
+    "addProfilePhoto": "upload photo",
+    "userName": "Name",
+    "userNameTooltip": "You can specify the name and surname",
+    "userNickname": "Nickname",
+    "userNicknameTooltip": "Used for indexing and searching",
+    "userAboutMe": "About me",
+    "userAboutMeTooltip": "A brief description of yourself",
+    "userGender": "Gender",
+    "userGenderMale": "Male",
+    "userGenderFemale": "Female",
+    "userPrivateAccountSwitch": "Private account",
+    "userDateOfBirth": "Birthday",
+    "saveChangesButton": "save changes",
+    "emptyFieldsError": "Please fill in all required fields (Nickname, Gender, Date of Birth).",
+    "correctErrorsMessage": "Changes were not saved. Please correct the errors.",
+    "alreadyTakenMessage": "This Nickname is already taken. Please choose another one.",
+    "successMessage": "Changes saved successfully.",
+    "errorMessage": "Changes were not saved due to an error."
   }
 }
