@@ -54,6 +54,24 @@
     "plansTitle": "Available plans",
     "plansParagraph": "There are several plans for using CrossWays. Please choose the one that suits you best."
   },
+  "LanguageSelector": {
+    "selectorTitle": "Language"
+  },
+  "ProfileInfo": {
+    "usersProfile": "My profile",
+    "usersTrips": "My trips",
+    "usersVipStatus": "VIP status",
+    "deleteAccount": "Delete Account",
+    "deleteAccountDialogTitle": "Confirm Delete Account",
+    "deleteAccountDialogParagraph": "Are you sure you want to delete your account? This action is irreversible.",
+    "deleteAccountDialogCancelButton": "Cancel",
+    "deleteAccountDialogConfirmButton": "Confirm",
+    "signOut": "Sign Out",
+    "signOutDialogTitle": "Confirm Sign Out",
+    "signOutDialogParagraph": "Are you sure you want to sign out?",
+    "signOutCancelButton": "Cancel",
+    "signOutConfirmButton": "Sign Out"
+  },
   "Card": {
     "cardThankTitle": "Thank you!",
     "cardThankParagraph": "You have purchased premium status, now you have access to all the capabilities of the service"

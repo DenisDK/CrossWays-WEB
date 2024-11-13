@@ -54,6 +54,24 @@
     "plansTitle": "Доступні плани",
     "plansParagraph": "Є кілька планів використання CrossWays. Будь ласка, виберіть той, який вам найбільше підходить."
   },
+  "LanguageSelector": {
+    "selectorTitle": "Мова"
+  },
+  "ProfileInfo": {
+    "usersProfile": "Мій профіль",
+    "usersTrips": "Мої подорожі",
+    "usersVipStatus": "VIP статус",
+    "deleteAccount": "Видалити акаунт",
+    "deleteAccountDialogTitle": "Підтвердьте видалення акаунта",
+    "deleteAccountDialogParagraph": "Ви впевнені, що хочете видалити свій аккаунт? Ця дія незворотна.",
+    "deleteAccountDialogCancelButton": "Скасувати",
+    "deleteAccountDialogConfirmButton": "Підтвердити",
+    "signOut": "Вийти",
+    "signOutDialogTitle": "Підтвердити вихід",
+    "signOutDialogParagraph": "Ви впевнені, що бажаєте вийти?",
+    "signOutCancelButton": "Скасувати",
+    "signOutConfirmButton": "Вийти"
+  },
   "Card": {
     "cardThankTitle": "Дякуємо!",
     "cardThankParagraph": "Ви придбали преміум статус, тепер вам доступні всі можливості сервісу"
