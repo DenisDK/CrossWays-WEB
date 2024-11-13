@@ -50,7 +50,12 @@
     "errorMessage": "Changes were not saved due to an error."
   },
   "Premium": {
+    "statusActive": "Premium status is active :)",
     "plansTitle": "Available plans",
     "plansParagraph": "There are several plans for using CrossWays. Please choose the one that suits you best."
+  },
+  "Card": {
+    "cardThankTitle": "Thank you!",
+    "cardThankParagraph": "You have purchased premium status, now you have access to all the capabilities of the service"
   }
 }

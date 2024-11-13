@@ -62,7 +62,7 @@ const PremiumPage = () => {
       {isPremium ? (
         <div className="max-w-screen-lg mx-auto mt-32">
           <h2 className="text-[#876447] text-6xl text-center font-bold">
-            {"Premium status is active :)"}
+            {t("statusActive")}
           </h2>
         </div>
       ) : (
