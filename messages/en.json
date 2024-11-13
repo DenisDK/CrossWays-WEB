@@ -28,5 +28,52 @@
   "MainPage": {
     "title": "Welcome back!",
     "createTripButton": "Create a new trip"
+  },
+  "Profile": {
+    "addProfilePhoto": "upload photo",
+    "userName": "Name",
+    "userNameTooltip": "You can specify the name and surname",
+    "userNickname": "Nickname",
+    "userNicknameTooltip": "Used for indexing and searching",
+    "userAboutMe": "About me",
+    "userAboutMeTooltip": "A brief description of yourself",
+    "userGender": "Gender",
+    "userGenderMale": "Male",
+    "userGenderFemale": "Female",
+    "userPrivateAccountSwitch": "Private account",
+    "userDateOfBirth": "Birthday",
+    "saveChangesButton": "save changes",
+    "emptyFieldsError": "Please fill in all required fields (Nickname, Gender, Date of Birth).",
+    "correctErrorsMessage": "Changes were not saved. Please correct the errors.",
+    "alreadyTakenMessage": "This Nickname is already taken. Please choose another one.",
+    "successMessage": "Changes saved successfully.",
+    "errorMessage": "Changes were not saved due to an error."
+  },
+  "Premium": {
+    "statusActive": "Premium status is active :)",
+    "plansTitle": "Available plans",
+    "plansParagraph": "There are several plans for using CrossWays. Please choose the one that suits you best."
+  },
+  "LanguageSelector": {
+    "selectorTitle": "Language"
+  },
+  "ProfileInfo": {
+    "usersProfile": "My profile",
+    "usersTrips": "My trips",
+    "usersVipStatus": "VIP status",
+    "deleteAccount": "Delete Account",
+    "deleteAccountDialogTitle": "Confirm Delete Account",
+    "deleteAccountDialogParagraph": "Are you sure you want to delete your account? This action is irreversible.",
+    "deleteAccountDialogCancelButton": "Cancel",
+    "deleteAccountDialogConfirmButton": "Confirm",
+    "signOut": "Sign Out",
+    "signOutDialogTitle": "Confirm Sign Out",
+    "signOutDialogParagraph": "Are you sure you want to sign out?",
+    "signOutCancelButton": "Cancel",
+    "signOutConfirmButton": "Sign Out"
+  },
+  "Card": {
+    "cardThankTitle": "Thank you!",
+    "cardThankParagraph": "You have purchased premium status, now you have access to all the capabilities of the service"
   }
 }

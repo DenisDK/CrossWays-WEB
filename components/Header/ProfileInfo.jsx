@@ -32,6 +32,7 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { deleteUserAndData } from "@/lib/deleteUser";
 
 const UserProfile = () => {
+  const t = useTranslations("ProfileInfo");
   const [user, setUser] = useState(null);
   const [profileImage, setProfileImage] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -122,7 +123,7 @@ const UserProfile = () => {
                 <ListItemIcon>
                   <FaUserCircle />
                 </ListItemIcon>
-                My profile
+                {t("usersProfile")}
               </MenuItem>
             </Link>
             <Link href={"/Main"}>
@@ -130,7 +131,7 @@ const UserProfile = () => {
                 <ListItemIcon>
                   <GiCommercialAirplane />
                 </ListItemIcon>
-                My trips
+                {t("usersTrips")}
               </MenuItem>
             </Link>
             <Link href={"/Premium"}>
@@ -138,7 +139,7 @@ const UserProfile = () => {
                 <ListItemIcon>
                   <RiVipCrownFill />
                 </ListItemIcon>
-                VIP status
+                {t("usersVipStatus")}
               </MenuItem>
             </Link>
             <MenuItem
@@ -148,7 +149,7 @@ const UserProfile = () => {
               <ListItemIcon>
                 <MdDelete className="text-red-700 font-bold" />
               </ListItemIcon>
-              Delete Account
+              {t("deleteAccount")}
             </MenuItem>
             <MenuItem
               className="text-red-700 font-bold"
@@ -157,7 +158,7 @@ const UserProfile = () => {
               <ListItemIcon>
                 <PiSignOutBold className="text-red-700 font-bold" />
               </ListItemIcon>
-              Sign Out
+              {t("signOut")}
             </MenuItem>
           </Menu>
 
@@ -166,11 +167,10 @@ const UserProfile = () => {
             open={openDeleteDialog}
             onClose={() => setOpenDeleteDialog(false)}
           >
-            <DialogTitle>Confirm Delete Account</DialogTitle>
+            <DialogTitle>{t("deleteAccountDialogTitle")}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Are you sure you want to delete your account? This action is
-                irreversible.
+                {t("deleteAccountDialogParagraph")}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -179,7 +179,7 @@ const UserProfile = () => {
                 className="font-bold"
                 color="success"
               >
-                Cancel
+                {t("deleteAccountDialogCancelButton")}
               </Button>
               <Button
                 onClick={handleDeleteAccount}
@@ -187,7 +187,7 @@ const UserProfile = () => {
                 color="error"
                 autoFocus
               >
-                Confirm
+                {t("deleteAccountDialogConfirmButton")}
               </Button>
             </DialogActions>
           </Dialog>
@@ -197,10 +197,10 @@ const UserProfile = () => {
             open={openSignOutDialog}
             onClose={() => setOpenSignOutDialog(false)}
           >
-            <DialogTitle>Confirm Sign Out</DialogTitle>
+            <DialogTitle>{t("signOutDialogTitle")}</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Are you sure you want to sign out?
+                {t("signOutDialogParagraph")}
               </DialogContentText>
             </DialogContent>
             <DialogActions>
@@ -209,7 +209,7 @@ const UserProfile = () => {
                 className="font-bold"
                 color="success"
               >
-                Cancel
+                {t("signOutCancelButton")}
               </Button>
               <Button
                 onClick={handleSignOut}
@@ -217,7 +217,7 @@ const UserProfile = () => {
                 color="error"
                 autoFocus
               >
-                Sign Out
+                {t("signOutConfirmButton")}
               </Button>
             </DialogActions>
           </Dialog>

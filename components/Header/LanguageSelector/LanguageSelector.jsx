@@ -8,6 +8,7 @@ import { useLocale, useTranslations } from "next-intl";
 import { routing } from "@/i18n/routing";
 
 const LanguageSelector = () => {
+  const t = useTranslations("LanguageSelector");
   const [language, setLanguage] = useState(useLocale()); // Використання початкової локалі
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -29,11 +30,11 @@ const LanguageSelector = () => {
 
   return (
     <FormControl variant="outlined" size="small" sx={{ minWidth: 100 }}>
-      <InputLabel>Language</InputLabel>
+      <InputLabel>{t("selectorTitle")}</InputLabel>
       <Select
         value={language}
         onChange={handleChange}
-        label="Language"
+        label={t("selectorTitle")}
         disabled={isPending}
         renderValue={(value) => (
           <span className="flex items-center">

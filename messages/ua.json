@@ -28,5 +28,52 @@
   "MainPage": {
     "title": "Ласкаво просимо!",
     "createTripButton": "Створити нову подорож"
+  },
+  "Profile": {
+    "addProfilePhoto": "завантажити фото",
+    "userName": "Прізвище та ім'я",
+    "userNameTooltip": "Ви можете вказати ім'я та прізвище",
+    "userNickname": "Псевдонім",
+    "userNicknameTooltip": "Використовується для індексації та пошуку",
+    "userAboutMe": "Про себе",
+    "userAboutMeTooltip": "Короткий опис себе",
+    "userGender": "Стать",
+    "userGenderMale": "Чоловіча",
+    "userGenderFemale": "Жіноча",
+    "userPrivateAccountSwitch": "Приватний аккаунт",
+    "userDateOfBirth": "День народження",
+    "saveChangesButton": "зберегти зміни",
+    "emptyFieldsError": "Будь ласка, заповніть усі обов'язкові поля (прізвище, стать, дата народження).",
+    "correctErrorsMessage": "Зміни не збережено. Будь ласка, виправте помилки.",
+    "alreadyTakenMessage": "Цей псевдонім уже зайнятий. Виберіть інший.",
+    "successMessage": "Зміни успішно збережено.",
+    "errorMessage": "Зміни не збережено через помилку."
+  },
+  "Premium": {
+    "statusActive": "Преміум статус активний :)",
+    "plansTitle": "Доступні плани",
+    "plansParagraph": "Є кілька планів використання CrossWays. Будь ласка, виберіть той, який вам найбільше підходить."
+  },
+  "LanguageSelector": {
+    "selectorTitle": "Мова"
+  },
+  "ProfileInfo": {
+    "usersProfile": "Мій профіль",
+    "usersTrips": "Мої подорожі",
+    "usersVipStatus": "VIP статус",
+    "deleteAccount": "Видалити акаунт",
+    "deleteAccountDialogTitle": "Підтвердьте видалення акаунта",
+    "deleteAccountDialogParagraph": "Ви впевнені, що хочете видалити свій аккаунт? Ця дія незворотна.",
+    "deleteAccountDialogCancelButton": "Скасувати",
+    "deleteAccountDialogConfirmButton": "Підтвердити",
+    "signOut": "Вийти",
+    "signOutDialogTitle": "Підтвердити вихід",
+    "signOutDialogParagraph": "Ви впевнені, що бажаєте вийти?",
+    "signOutCancelButton": "Скасувати",
+    "signOutConfirmButton": "Вийти"
+  },
+  "Card": {
+    "cardThankTitle": "Дякуємо!",
+    "cardThankParagraph": "Ви придбали преміум статус, тепер вам доступні всі можливості сервісу"
   }
 }
