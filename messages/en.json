@@ -74,6 +74,19 @@
   },
   "Card": {
     "cardThankTitle": "Thank you!",
-    "cardThankParagraph": "You have purchased premium status, now you have access to all the capabilities of the service"
+    "cardThankParagraph": "You have purchased premium status, now you have access to all the capabilities of the service",
+    "cardStandartTitle": "Regular",
+    "cardStandartParagraph": "Use standard features to plan and search for trips easily",
+    "cardStandartSubs": "Only 10 availible subs",
+    "cardStandartTrips": "Only 5 active trips",
+    "cardStandartPrivate": "Private mode unavailable",
+    "cardStandartAvatar": "Static avatar",
+    "cardStandartStatus": "Now active",
+    "cardAdvancedTitle": "Advanced",
+    "cardAdvancedParagraph": "Use advanced functionality for a better user experience",
+    "cardAdvancedSubs": "Unlimited subs",
+    "cardAdvancedTrips": "Unlimited trips",
+    "cardAdvancedPrivate": "Availible private mode",
+    "cardAdvancedAvatar": "Animated avatar"
   }
 }

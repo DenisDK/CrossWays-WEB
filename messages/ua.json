@@ -74,6 +74,19 @@
   },
   "Card": {
     "cardThankTitle": "Дякуємо!",
-    "cardThankParagraph": "Ви придбали преміум статус, тепер вам доступні всі можливості сервісу"
+    "cardThankParagraph": "Ви придбали преміум статус, тепер вам доступні всі можливості сервісу",
+    "cardStandartTitle": "Звичайна",
+    "cardStandartParagraph": "Використовуйте стандартні функції, щоб знаходити подорожі",
+    "cardStandartSubs": "Лише 10 доступних підписок",
+    "cardStandartTrips": "Лише 5 активних поїздок",
+    "cardStandartPrivate": "Приватний режим недоступний",
+    "cardStandartAvatar": "Статичний аватар",
+    "cardStandartStatus": "Використовується зараз",
+    "cardAdvancedTitle": "Розширена",
+    "cardAdvancedParagraph": "Використовуйте розширений функціонал для кращого досвіду",
+    "cardAdvancedSubs": "Необмежена кількість підписок",
+    "cardAdvancedTrips": "Необмежена кількість подородей",
+    "cardAdvancedPrivate": "Доступний приватний режим",
+    "cardAdvancedAvatar": "Анімований аватар"
   }
 }
