@@ -3,31 +3,57 @@
 import Header from "@/components/Header/Header";
 import React, { useEffect, useState } from "react";
 import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
-import { doc, getDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import {
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  arrayRemove,
+} from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
 import { useParams } from "next/navigation";
-import { CircularProgress } from "@mui/material";
+import { Button, CircularProgress } from "@mui/material";
 import { GiLaurelCrown } from "react-icons/gi";
 
 const OtherUserProfilePage = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // ID користувача, на якого ви дивитесь
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isFollowing, setIsFollowing] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      const fetchProfileData = async () => {
-        const userDoc = doc(db, "Users", id);
-        const userSnapshot = await getDoc(userDoc);
-        if (userSnapshot.exists()) {
-          setProfileData(userSnapshot.data());
-        }
+    const fetchProfileData = async () => {
+      if (!id) return;
+      const userDoc = doc(db, "Users", id);
+      const userSnapshot = await getDoc(userDoc);
+
+      if (userSnapshot.exists()) {
+        setProfileData(userSnapshot.data());
+      }
+
+      // Отримуємо UID поточного користувача
+      const currentUser = auth.currentUser;
+      if (!currentUser) {
+        console.error("User not logged in");
         setLoading(false);
-      };
-      fetchProfileData();
-    }
+        return;
+      }
+
+      const currentUserDoc = doc(db, "Users", currentUser.uid);
+      const currentUserSnapshot = await getDoc(currentUserDoc);
+
+      if (
+        currentUserSnapshot.exists() &&
+        currentUserSnapshot.data().travelCompanions?.includes(id)
+      ) {
+        setIsFollowing(true);
+      }
+
+      setLoading(false);
+    };
+
+    fetchProfileData();
   }, [id]);
 
   const calculateAge = (birthday) => {
@@ -44,6 +70,33 @@ const OtherUserProfilePage = () => {
     return age;
   };
 
+  const handleFollowToggle = async () => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      console.error("User not logged in");
+      return;
+    }
+
+    const currentUserDoc = doc(db, "Users", currentUser.uid); // Документ поточного користувача
+    try {
+      if (isFollowing) {
+        // Видалити ID з `travelCompanions`
+        await updateDoc(currentUserDoc, {
+          travelCompanions: arrayRemove(id),
+        });
+        setIsFollowing(false);
+      } else {
+        // Додати ID до `travelCompanions`
+        await updateDoc(currentUserDoc, {
+          travelCompanions: arrayUnion(id),
+        });
+        setIsFollowing(true);
+      }
+    } catch (error) {
+      console.error("Error updating travelCompanions:", error);
+    }
+  };
+
   if (loading)
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
@@ -56,7 +109,7 @@ const OtherUserProfilePage = () => {
       <Header />
       <div className="flex flex-col items-center justify-center mt-48">
         <div className="flex justify-between max-w-screen-lg">
-          <div className="flex flex-col items-center min-w-[300px] bg-[#e9b08254] rounded-xl pt-5">
+          <div className="flex flex-col items-center min-w-[300px] bg-[#e9b08254] rounded-xl p-5">
             <Avatar
               className="mb-4"
               alt={profileData?.name}
@@ -70,6 +123,33 @@ const OtherUserProfilePage = () => {
               {profileData?.nickname || "Nickname"}
             </div>
             <Rating className="mt-2" name="read-only" value={5} readOnly />
+
+            {isFollowing ? (
+              <Button
+                className="mt-5 w-40"
+                variant="contained"
+                color="error"
+                onClick={handleFollowToggle}
+              >
+                UnFollow
+              </Button>
+            ) : (
+              <Button
+                className="mt-5 w-40"
+                variant="contained"
+                onClick={handleFollowToggle}
+              >
+                Follow
+              </Button>
+            )}
+
+            {/* // <Button
+            //   className="mt-5 w-40"
+            //   variant="contained"
+            //   onClick={handleFollowToggle}
+            // >
+            //   {isFollowing ? "UnFollow" : "Follow"}
+            // </Button> */}
           </div>
 
           <div className="flex flex-col flex-grow gap-6 pl-6">
@@ -77,7 +157,7 @@ const OtherUserProfilePage = () => {
               <span className="font-bold text-2xl mr-3">About Me:</span>
               <span className="text-xl">{profileData?.aboutMe || "N/A"}</span>
             </div>
-            <div className="bg-[#e9b08254] p-5 flex flex-col gap-6 rounded-xl">
+            <div className="bg-[#e9b08254] p-5 h-full flex flex-col gap-6 rounded-xl">
               <div>
                 <span className="font-bold text-2xl mr-3">Gender:</span>
                 <span className="text-xl">{profileData?.gender || "N/A"}</span>
@@ -86,8 +166,12 @@ const OtherUserProfilePage = () => {
                 <span className="font-bold text-2xl mr-3">Date of Birth:</span>
                 <span className="text-xl">
                   {profileData?.birthday?.toDate().toLocaleDateString() ||
-                    "N/A"}{" "}
-                  /{" "}
+                    "N/A"}
+                </span>
+              </div>
+              <div>
+                <span className="font-bold text-2xl mr-3">Years:</span>
+                <span className="text-xl">
                   {profileData?.birthday
                     ? calculateAge(profileData.birthday)
                     : "N/A"}
