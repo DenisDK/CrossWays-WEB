@@ -17,6 +17,11 @@ import {
   Tooltip,
   Typography,
   Snackbar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  IconButton,
 } from "@mui/material";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -36,6 +41,8 @@ import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import Alert from "@mui/material/Alert";
 import { useTranslations } from "next-intl";
+import { FaTrash } from "react-icons/fa";
+import { Link } from "@/i18n/routing";
 
 const ProfilePage = () => {
   const t = useTranslations("Profile");
@@ -57,6 +64,7 @@ const ProfilePage = () => {
   });
   const [profileImage, setProfileImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [travelCompanions, setTravelCompanions] = useState([]);
 
   // Для сповіщень
   const [snackBarOpen, setSnackBarOpen] = useState(false);
@@ -93,6 +101,52 @@ const ProfilePage = () => {
 
     return () => unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      const fetchTravelCompanions = async () => {
+        try {
+          const userDocRef = doc(db, "Users", user.uid);
+          const userDoc = await getDoc(userDocRef);
+          if (userDoc.exists() && userDoc.data().travelCompanions) {
+            const companionUIDs = userDoc.data().travelCompanions;
+
+            // Fetch detailed data for each companion
+            const companionDataPromises = companionUIDs.map(async (uid) => {
+              const companionDoc = await getDoc(doc(db, "Users", uid));
+              return { uid, ...companionDoc.data() };
+            });
+
+            const companions = await Promise.all(companionDataPromises);
+            setTravelCompanions(companions);
+          }
+        } catch (error) {
+          console.error("Failed to fetch travel companions:", error);
+        }
+      };
+
+      fetchTravelCompanions();
+    }
+  }, [user]);
+
+  const handleRemoveCompanion = async (companionUID) => {
+    try {
+      // Remove companion from Firestore
+      const updatedCompanions = travelCompanions.filter(
+        (comp) => comp.uid !== companionUID
+      );
+      setTravelCompanions(updatedCompanions);
+
+      const userDocRef = doc(db, "Users", user.uid);
+      await setDoc(
+        userDocRef,
+        { travelCompanions: updatedCompanions.map((comp) => comp.uid) },
+        { merge: true }
+      );
+    } catch (error) {
+      console.error("Failed to remove companion:", error);
+    }
+  };
 
   const uploadProfileImage = async () => {
     if (!profileImage) return;
@@ -238,8 +292,8 @@ const ProfilePage = () => {
     <div>
       <Header />
       <div className="flex flex-col min-h-screen items-center justify-center -mt-28">
-        <div className="flex justify-between w-full max-w-screen-lg">
-          <div className="flex flex-col items-center w-1/3 mt-8">
+        <div className="flex justify-between w-full max-w-screen-xl gap-5">
+          <div className="flex flex-col items-center w-1/5 mt-8">
             <Avatar
               className="mb-4"
               alt="User"
@@ -271,7 +325,7 @@ const ProfilePage = () => {
             <Rating className="mt-2" name="read-only" value={5} readOnly />
           </div>
 
-          <div className="flex flex-col flex-grow gap-6 pl-8">
+          <div className="flex flex-col flex-grow gap-6">
             {error && <Typography color="error">{error}</Typography>}
             <div className="flex gap-6">
               <Tooltip title={t("userNameTooltip")}>
@@ -364,6 +418,47 @@ const ProfilePage = () => {
               {/* Save Changes */}
               {t("saveChangesButton")}
             </Button>
+          </div>
+          <div className="flex flex-col w-1/4 mt-8">
+            <div className="text-lg font-bold pl-4">Subscriptions</div>
+            {travelCompanions.length === 0 ? (
+              <div className="text-gray-500 italic mt-4 pl-4">
+                There is no one here yet
+              </div>
+            ) : (
+              <List>
+                {travelCompanions.map((companion) => (
+                  <ListItem key={companion.uid}>
+                    <ListItemAvatar>
+                      <Link href={`/Users/${companion.uid}`}>
+                        <Avatar
+                          src={companion.profileImage || "/noavatar.png"}
+                          alt={companion.name}
+                        />
+                      </Link>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={
+                        <Link href={`/Users/${companion.uid}`}>
+                          <span className="cursor-pointer hover:underline">
+                            {companion.name}
+                          </span>
+                        </Link>
+                      }
+                      secondary={companion.nickname}
+                    />
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => handleRemoveCompanion(companion.uid)}
+                      className="text-gray-500 hover:text-red-700 transition-colors"
+                    >
+                      <FaTrash size={18} />
+                    </IconButton>
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </div>
         </div>
       </div>
