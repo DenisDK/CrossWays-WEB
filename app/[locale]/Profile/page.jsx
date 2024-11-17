@@ -53,8 +53,7 @@ const ProfilePage = () => {
   const [nickname, setNickname] = useState("");
   const [aboutMe, setAboutMe] = useState("");
   const [gender, setGender] = useState("");
-  // const [birthday, setBirthday] = useState(dayjs("")); // Ініціалізація порожньою датою
-  const [birthday, setBirthday] = useState(null); // Ініціалізація порожньою датою
+  const [birthday, setBirthday] = useState(null);
   const [isPrivate, setIsPrivate] = useState(false);
   const [error, setError] = useState("");
   const [errors, setErrors] = useState({
@@ -65,6 +64,7 @@ const ProfilePage = () => {
   const [profileImage, setProfileImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [travelCompanions, setTravelCompanions] = useState([]);
+  const [isPremium, setIsPremium] = useState(false);
 
   // Для сповіщень
   const [snackBarOpen, setSnackBarOpen] = useState(false);
@@ -85,12 +85,11 @@ const ProfilePage = () => {
           setNickname(data.nickname);
           setAboutMe(data.aboutMe);
           setGender(data.gender);
-          // setBirthday(dayjs(data.birthday));
-          // Встановлюємо дату народження правильно
           if (data.birthday) {
-            setBirthday(dayjs(data.birthday.toDate())); // Перетворюємо Timestamp на dayjs
+            setBirthday(dayjs(data.birthday.toDate()));
           }
           setIsPrivate(data.isPrivate);
+          setIsPremium(data.isPremium);
         }
       } else {
         setUser(null);
@@ -110,8 +109,6 @@ const ProfilePage = () => {
           const userDoc = await getDoc(userDocRef);
           if (userDoc.exists() && userDoc.data().travelCompanions) {
             const companionUIDs = userDoc.data().travelCompanions;
-
-            // Fetch detailed data for each companion
             const companionDataPromises = companionUIDs.map(async (uid) => {
               const companionDoc = await getDoc(doc(db, "Users", uid));
               return { uid, ...companionDoc.data() };
@@ -131,7 +128,6 @@ const ProfilePage = () => {
 
   const handleRemoveCompanion = async (companionUID) => {
     try {
-      // Remove companion from Firestore
       const updatedCompanions = travelCompanions.filter(
         (comp) => comp.uid !== companionUID
       );
@@ -187,20 +183,17 @@ const ProfilePage = () => {
     return valid;
   };
 
-  // Функція для перевірки віку
   const isAdult = (dateOfBirth) => {
     const today = dayjs();
     const age = today.diff(dateOfBirth, "year");
     return age >= 18;
   };
 
-  // Перевірка доступності Nickname
   const checkNicknameAvailability = async (nickname) => {
     const usersRef = collection(db, "Users");
     const q = query(usersRef, where("nickname", "==", nickname));
     const querySnapshot = await getDocs(q);
 
-    // Перевірка, чи порожній результат або чи це поточний користувач
     return (
       querySnapshot.empty ||
       (querySnapshot.docs.length === 1 && querySnapshot.docs[0].id === user.uid)
@@ -216,7 +209,6 @@ const ProfilePage = () => {
       return;
     }
 
-    // Перевіряємо доступність Nickname
     const isAvailable = await checkNicknameAvailability(nickname);
     if (!isAvailable) {
       setAlertSeverity("error");
@@ -234,7 +226,6 @@ const ProfilePage = () => {
           nickname,
           aboutMe,
           gender,
-          // Зберігаємо дату як Timestamp
           birthday: Timestamp.fromDate(birthday.toDate()),
           isPrivate,
         },
@@ -267,6 +258,14 @@ const ProfilePage = () => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      const isGif = file.type === "image/gif";
+      if (isGif && !isPremium) {
+        setAlertSeverity("error");
+        setAlertMessage("Only premium users can upload GIF images.");
+        setSnackBarOpen(true);
+        return;
+      }
+
       setProfileImage(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -398,16 +397,17 @@ const ProfilePage = () => {
               />
             </LocalizationProvider>
 
-            <FormControlLabel
-              control={
-                <Switch
-                  checked={isPrivate}
-                  onChange={(e) => setIsPrivate(e.target.checked)}
-                />
-              }
-              // label="Private Profile"
-              label={t("userPrivateAccountSwitch")}
-            />
+            {isPremium && (
+              <FormControlLabel
+                control={
+                  <Switch
+                    checked={isPrivate}
+                    onChange={(e) => setIsPrivate(e.target.checked)}
+                  />
+                }
+                label={t("userPrivateAccountSwitch")}
+              />
+            )}
 
             <Button
               variant="contained"
@@ -440,7 +440,7 @@ const ProfilePage = () => {
                     <ListItemText
                       primary={
                         <Link href={`/Users/${companion.uid}`}>
-                          <span className="cursor-pointer hover:underline">
+                          <span className="cursor-pointer font-bold hover:underline">
                             {companion.name}
                           </span>
                         </Link>
