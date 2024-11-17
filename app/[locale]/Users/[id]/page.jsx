@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useParams } from "next/navigation";
-import { Button, CircularProgress } from "@mui/material";
+import { Alert, Button, CircularProgress, Snackbar } from "@mui/material";
 import { GiLaurelCrown } from "react-icons/gi";
 
 const OtherUserProfilePage = () => {
@@ -21,6 +21,21 @@ const OtherUserProfilePage = () => {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
+
+  // Error alert
+  const [snackBarOpen, setSnackBarOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertSeverity, setAlertSeverity] = useState("error");
+
+  const handleSnackbarClose = () => {
+    setSnackBarOpen(false);
+  };
+
+  const showAlert = (message, severity = "error") => {
+    setAlertMessage(message);
+    setAlertSeverity(severity);
+    setSnackBarOpen(true);
+  };
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -73,11 +88,28 @@ const OtherUserProfilePage = () => {
   const handleFollowToggle = async () => {
     const currentUser = auth.currentUser;
     if (!currentUser) {
-      console.error("User not logged in");
+      showAlert("User not logged in");
       return;
     }
 
     const currentUserDoc = doc(db, "Users", currentUser.uid); // Документ поточного користувача
+    const currentUserSnapshot = await getDoc(currentUserDoc);
+
+    if (!currentUserSnapshot.exists()) {
+      showAlert("Current user document does not exist");
+      return;
+    }
+
+    const currentUserData = currentUserSnapshot.data();
+    const isPremium = currentUserData.isPremium;
+    const travelCompanions = currentUserData.travelCompanions || [];
+
+    // Перевірка на кількість підписок для непреміум користувачів (не більше одного, можна змінити)
+    if (!isPremium && !isFollowing && travelCompanions.length >= 1) {
+      showAlert("Non-premium users can only follow one person");
+      return;
+    }
+
     try {
       if (isFollowing) {
         // Видалити ID з `travelCompanions`
@@ -93,7 +125,7 @@ const OtherUserProfilePage = () => {
         setIsFollowing(true);
       }
     } catch (error) {
-      console.error("Error updating travelCompanions:", error);
+      showAlert("Error updating travelCompanions: " + error.message);
     }
   };
 
@@ -142,14 +174,6 @@ const OtherUserProfilePage = () => {
                 Follow
               </Button>
             )}
-
-            {/* // <Button
-            //   className="mt-5 w-40"
-            //   variant="contained"
-            //   onClick={handleFollowToggle}
-            // >
-            //   {isFollowing ? "UnFollow" : "Follow"}
-            // </Button> */}
           </div>
 
           <div className="flex flex-col flex-grow gap-6 pl-6">
@@ -202,6 +226,13 @@ const OtherUserProfilePage = () => {
           </div>
         </div>
       </div>
+      <Snackbar
+        open={snackBarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert severity={alertSeverity}>{alertMessage}</Alert>
+      </Snackbar>
     </div>
   );
 };
