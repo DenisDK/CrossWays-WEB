@@ -427,36 +427,38 @@ const ProfilePage = () => {
               </div>
             ) : (
               <List>
-                {travelCompanions.map((companion) => (
-                  <ListItem key={companion.uid}>
-                    <ListItemAvatar>
-                      <Link href={`/Users/${companion.uid}`}>
-                        <Avatar
-                          src={companion.profileImage || "/noavatar.png"}
-                          alt={companion.name}
-                        />
-                      </Link>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
+                {travelCompanions
+                  .filter((companion) => !companion.isPrivate)
+                  .map((companion) => (
+                    <ListItem key={companion.uid}>
+                      <ListItemAvatar>
                         <Link href={`/Users/${companion.uid}`}>
-                          <span className="cursor-pointer font-bold hover:underline">
-                            {companion.name}
-                          </span>
+                          <Avatar
+                            src={companion.profileImage || "/noavatar.png"}
+                            alt={companion.name}
+                          />
                         </Link>
-                      }
-                      secondary={companion.nickname}
-                    />
-                    <IconButton
-                      edge="end"
-                      aria-label="delete"
-                      onClick={() => handleRemoveCompanion(companion.uid)}
-                      className="text-gray-500 hover:text-red-700 transition-colors"
-                    >
-                      <FaTrash size={18} />
-                    </IconButton>
-                  </ListItem>
-                ))}
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          <Link href={`/Users/${companion.uid}`}>
+                            <span className="cursor-pointer font-bold hover:underline">
+                              {companion.name}
+                            </span>
+                          </Link>
+                        }
+                        secondary={companion.nickname}
+                      />
+                      <IconButton
+                        edge="end"
+                        aria-label="delete"
+                        onClick={() => handleRemoveCompanion(companion.uid)}
+                        className="text-gray-500 hover:text-red-700 transition-colors"
+                      >
+                        <FaTrash size={18} />
+                      </IconButton>
+                    </ListItem>
+                  ))}
               </List>
             )}
           </div>
