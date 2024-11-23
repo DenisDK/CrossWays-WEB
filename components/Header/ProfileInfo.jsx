@@ -126,7 +126,7 @@ const UserProfile = () => {
                 {t("usersProfile")}
               </MenuItem>
             </Link>
-            <Link href={"/Main"}>
+            <Link href={"/Trips"}>
               <MenuItem>
                 <ListItemIcon>
                   <GiCommercialAirplane />
