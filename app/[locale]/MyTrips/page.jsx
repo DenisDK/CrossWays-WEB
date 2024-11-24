@@ -1,7 +1,5 @@
 "use client";
-
-import Header from "@/components/Header/Header";
-import PopupForm from "@/components/PopupForm/PopupForm";
+import React, { useState, useEffect } from "react";
 import {
   Fab,
   Card,
@@ -12,16 +10,19 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import React, { useState, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import Header from "@/components/Header/Header";
+import PopupForm from "@/components/PopupForm/PopupForm";
 import TripDetailsDialog from "@/components/PopupForm/TripDetailsDialog";
+import EditTripDialog from "@/components/PopupForm/EditTripDialog";
 
 const TripsPage = () => {
   const [openCreate, setOpenCreate] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -42,6 +43,15 @@ const TripsPage = () => {
 
   const handleCloseDetails = () => {
     setOpenDetails(false);
+  };
+
+  const handleOpenEdit = (tripId) => {
+    setSelectedTripId(tripId);
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOpenEdit(false);
   };
 
   const fetchTrips = async (userId) => {
@@ -94,6 +104,11 @@ const TripsPage = () => {
         onClose={handleCloseDetails}
         tripId={selectedTripId}
       />
+      <EditTripDialog
+        open={openEdit}
+        handleClose={handleCloseEdit}
+        tripId={selectedTripId}
+      />
       <div className="max-w-screen-xl mx-auto pt-28 pb-10">
         {loading ? (
           <Box
@@ -115,7 +130,7 @@ const TripsPage = () => {
                     image={trip.imageUrl}
                     alt={trip.title}
                   />
-                  <CardContent className="flex flex-col flex-grow">
+                  <CardContent className="flex-grow">
                     <Typography
                       className="px-2"
                       gutterBottom
@@ -125,20 +140,25 @@ const TripsPage = () => {
                       {trip.title}
                     </Typography>
                     <Typography
-                      className="px-2"
+                      className="px-2 font-bold mb-2 text-base"
                       variant="body2"
                       color="text.secondary"
                     >
                       {trip.country}
                     </Typography>
                     <Typography
-                      className="px-2 flex-grow"
+                      className="px-2"
                       variant="body2"
                       color="text.secondary"
                     >
                       {trip.description.substring(0, 100)}...
                     </Typography>
-                    <div className="mt-auto">
+                    <Box
+                      mt={2}
+                      display="flex"
+                      justifyContent="space-between"
+                      alignItems="center"
+                    >
                       <Button
                         variant="text"
                         color="primary"
@@ -146,7 +166,14 @@ const TripsPage = () => {
                       >
                         View Details
                       </Button>
-                    </div>
+                      <Button
+                        variant="text"
+                        color="primary"
+                        onClick={() => handleOpenEdit(trip.id)}
+                      >
+                        Change
+                      </Button>
+                    </Box>
                   </CardContent>
                 </Card>
               </div>
