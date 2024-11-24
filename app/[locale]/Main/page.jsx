@@ -105,14 +105,24 @@ const MainPage = () => {
           {t("title")}
         </h2>
         {isUser ? (
-          <Link href={"/MyTrips"}>
-            <Button
-              variant="contained"
-              className="absolute top-[400px] left-[180px] bg-white text-[#876447] transform -translate-x-1/2 -translate-y-1/2 z-10 font-bold"
-            >
-              {t("createTripButton")}
-            </Button>
-          </Link>
+          <>
+            <Link href={"/MyTrips"}>
+              <Button
+                variant="contained"
+                className="absolute w-[190px] top-[400px] left-[180px] bg-white text-[#876447] transform -translate-x-1/2 -translate-y-1/2 z-10 font-bold"
+              >
+                {t("createTripButton")}
+              </Button>
+            </Link>
+            <Link href={"/OtherTrips"}>
+              <Button
+                variant="contained"
+                className="absolute w-[190px] top-[450px] left-[180px] bg-white text-[#876447] transform -translate-x-1/2 -translate-y-1/2 z-10 font-bold"
+              >
+                find a new trip
+              </Button>
+            </Link>
+          </>
         ) : (
           <Link href={"/Join-Now"}>
             <Button
