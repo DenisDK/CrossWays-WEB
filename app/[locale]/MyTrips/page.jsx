@@ -10,25 +10,38 @@ import {
   Typography,
   CircularProgress,
   Box,
+  Button,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { IoMdAdd } from "react-icons/io";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import TripDetailsDialog from "@/components/PopupForm/TripDetailsDialog";
 
 const TripsPage = () => {
-  const [open, setOpen] = useState(false);
+  const [openCreate, setOpenCreate] = useState(false);
+  const [openDetails, setOpenDetails] = useState(false);
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [selectedTripId, setSelectedTripId] = useState(null);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickOpenCreate = () => {
+    setOpenCreate(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseCreate = () => {
+    setOpenCreate(false);
+  };
+
+  const handleOpenDetails = (tripId) => {
+    setSelectedTripId(tripId);
+    setOpenDetails(true);
+  };
+
+  const handleCloseDetails = () => {
+    setOpenDetails(false);
   };
 
   const fetchTrips = async (userId) => {
@@ -59,10 +72,10 @@ const TripsPage = () => {
   }, []);
 
   useEffect(() => {
-    if (!open && user) {
+    if (!openCreate && user) {
       fetchTrips(user.uid);
     }
-  }, [open, user]);
+  }, [openCreate, user]);
 
   return (
     <div className="relative">
@@ -71,11 +84,16 @@ const TripsPage = () => {
         className="fixed bottom-5 right-5"
         color="primary"
         aria-label="add"
-        onClick={handleClickOpen}
+        onClick={handleClickOpenCreate}
       >
         <IoMdAdd size={28} />
       </Fab>
-      <PopupForm open={open} handleClose={handleClose} />
+      <PopupForm open={openCreate} handleClose={handleCloseCreate} />
+      <TripDetailsDialog
+        open={openDetails}
+        onClose={handleCloseDetails}
+        tripId={selectedTripId}
+      />
       <div className="max-w-screen-xl mx-auto pt-28 pb-10">
         {loading ? (
           <Box
@@ -97,16 +115,38 @@ const TripsPage = () => {
                     image={trip.imageUrl}
                     alt={trip.title}
                   />
-                  <CardContent className="flex-grow">
-                    <Typography gutterBottom variant="h5" component="div">
+                  <CardContent className="flex flex-col flex-grow">
+                    <Typography
+                      className="px-2"
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                    >
                       {trip.title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      className="px-2"
+                      variant="body2"
+                      color="text.secondary"
+                    >
                       {trip.country}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary">
+                    <Typography
+                      className="px-2 flex-grow"
+                      variant="body2"
+                      color="text.secondary"
+                    >
                       {trip.description.substring(0, 100)}...
                     </Typography>
+                    <div className="mt-auto">
+                      <Button
+                        variant="text"
+                        color="primary"
+                        onClick={() => handleOpenDetails(trip.id)}
+                      >
+                        View Details
+                      </Button>
+                    </div>
                   </CardContent>
                 </Card>
               </div>

@@ -105,7 +105,7 @@ const MainPage = () => {
           {t("title")}
         </h2>
         {isUser ? (
-          <Link href={"/"}>
+          <Link href={"/MyTrips"}>
             <Button
               variant="contained"
               className="absolute top-[400px] left-[180px] bg-white text-[#876447] transform -translate-x-1/2 -translate-y-1/2 z-10 font-bold"
