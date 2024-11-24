@@ -22,8 +22,8 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
   const [title, setTitle] = useState("");
   const [country, setCountry] = useState("");
   const [memberLimit, setMemberLimit] = useState("");
-  const [dateFrom, setDateFrom] = useState(null);
-  const [dateTo, setDateTo] = useState(null);
+  const [from, setFrom] = useState(null);
+  const [to, setTo] = useState(null);
   const [about, setAbout] = useState("");
   const [photo, setPhoto] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(null);
@@ -41,10 +41,8 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
             setTitle(tripData.title || "");
             setCountry(tripData.country || "");
             setMemberLimit(tripData.memberLimit || "");
-            setDateFrom(
-              tripData.dateFrom ? dayjs(tripData.dateFrom.toDate()) : null
-            );
-            setDateTo(tripData.dateTo ? dayjs(tripData.dateTo.toDate()) : null);
+            setFrom(tripData.from ? dayjs(tripData.from.toDate()) : null);
+            setTo(tripData.to ? dayjs(tripData.to.toDate()) : null);
             setAbout(tripData.description || "");
             setPhotoPreview(tripData.imageUrl || null);
           } else {
@@ -70,8 +68,8 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
     if (!title) newErrors.title = true;
     if (!country) newErrors.country = true;
     if (!memberLimit) newErrors.memberLimit = true;
-    if (!dateFrom) newErrors.dateFrom = true;
-    if (!dateTo) newErrors.dateTo = true;
+    if (!from) newErrors.from = true;
+    if (!to) newErrors.to = true;
     if (!about) newErrors.about = true;
 
     if (Object.keys(newErrors).length > 0) {
@@ -96,8 +94,8 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
       title,
       country,
       memberLimit: Number(memberLimit),
-      dateFrom: dateFrom ? Timestamp.fromDate(dateFrom.toDate()) : null,
-      dateTo: dateTo ? Timestamp.fromDate(dateTo.toDate()) : null,
+      from: from ? Timestamp.fromDate(from.toDate()) : null,
+      to: to ? Timestamp.fromDate(to.toDate()) : null,
       description: about,
       imageUrl,
     };
@@ -117,8 +115,8 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
     setTitle("");
     setCountry("");
     setMemberLimit("");
-    setDateFrom(null);
-    setDateTo(null);
+    setFrom(null);
+    setTo(null);
     setAbout("");
     setPhoto(null);
     setPhotoPreview(null);
@@ -198,25 +196,25 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
                 <Box display="flex" justifyContent="space-between">
                   <DesktopDatePicker
                     label="Date (From)"
-                    value={dateFrom}
-                    onChange={(newValue) => setDateFrom(newValue)}
+                    value={from}
+                    onChange={(newValue) => setFrom(newValue)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         fullWidth
-                        error={errors.dateFrom ? true : false}
+                        error={errors.from ? true : false}
                       />
                     )}
                   />
                   <DesktopDatePicker
                     label="Date (To)"
-                    value={dateTo}
-                    onChange={(newValue) => setDateTo(newValue)}
+                    value={to}
+                    onChange={(newValue) => setTo(newValue)}
                     renderInput={(params) => (
                       <TextField
                         {...params}
                         fullWidth
-                        error={errors.dateTo ? true : false}
+                        error={errors.to ? true : false}
                       />
                     )}
                   />
