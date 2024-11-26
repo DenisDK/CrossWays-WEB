@@ -9,9 +9,19 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
 
 // Імпорт з Firebase
-import { auth } from "@/lib/firebase";
+import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
-// import { signOutUser } from "@/lib/signOut";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+  updateDoc,
+  arrayRemove,
+  arrayUnion,
+} from "firebase/firestore";
 import ProfileInfo from "./ProfileInfo";
 import LanguageSelector from "./LanguageSelector/LanguageSelector";
 import NotificationDrawer from "./NotificationDrawer/NotificationDrawer";
@@ -19,17 +29,58 @@ import NotificationDrawer from "./NotificationDrawer/NotificationDrawer";
 const Header = () => {
   const [isUser, setIsUser] = useState(auth.currentUser);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [requests, setRequests] = useState([]);
+  const [trips, setTrips] = useState([]);
+
+  const fetchUserDetails = async (userId) => {
+    const userDocRef = doc(db, "Users", userId);
+    const userDoc = await getDoc(userDocRef);
+    if (userDoc.exists()) {
+      return userDoc.data();
+    }
+    return null;
+  };
+
+  const fetchRequestsAndTrips = async (userId) => {
+    const q = query(collection(db, "Trips"), where("creatorId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    const tripsList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    setTrips(tripsList);
+
+    const requestsList = await Promise.all(
+      tripsList.flatMap(async (trip) => {
+        return await Promise.all(
+          trip.requests.map(async (userId) => {
+            const userDetails = await fetchUserDetails(userId);
+            return {
+              tripId: trip.id,
+              userId,
+              userAvatar: userDetails?.profileImage || "",
+              userName: userDetails?.name || "",
+            };
+          })
+        );
+      })
+    );
+    setRequests(requestsList.flat());
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setIsUser(true); // Користувач увійшов
+        setIsUser(true);
+        fetchRequestsAndTrips(user.uid);
       } else {
-        setIsUser(false); // Користувач не увійшов
+        setIsUser(false);
+        setTrips([]);
+        setRequests([]);
       }
     });
 
-    return () => unsubscribe(); // Очищення підписки
+    return () => unsubscribe();
   }, []);
 
   const toggleDrawer = (open) => (event) => {
@@ -40,6 +91,43 @@ const Header = () => {
       return;
     }
     setIsDrawerOpen(open);
+  };
+
+  const handleAcceptRequest = async (tripId, userId) => {
+    const tripDocRef = doc(db, "Trips", tripId);
+    await updateDoc(tripDocRef, {
+      requests: arrayRemove(userId),
+      participants: arrayUnion(userId),
+    });
+    // Оновлюємо стан requests та trips
+    setRequests((prevRequests) =>
+      prevRequests.filter((request) => request.userId !== userId)
+    );
+    setTrips((prevTrips) =>
+      prevTrips.map((trip) =>
+        trip.id === tripId
+          ? { ...trip, requests: trip.requests.filter((id) => id !== userId) }
+          : trip
+      )
+    );
+  };
+
+  const handleRejectRequest = async (tripId, userId) => {
+    const tripDocRef = doc(db, "Trips", tripId);
+    await updateDoc(tripDocRef, {
+      requests: arrayRemove(userId),
+    });
+    // Оновлюємо стан requests та trips
+    setRequests((prevRequests) =>
+      prevRequests.filter((request) => request.userId !== userId)
+    );
+    setTrips((prevTrips) =>
+      prevTrips.map((trip) =>
+        trip.id === tripId
+          ? { ...trip, requests: trip.requests.filter((id) => id !== userId) }
+          : trip
+      )
+    );
   };
 
   return (
@@ -80,6 +168,10 @@ const Header = () => {
             <NotificationDrawer
               isDrawerOpen={isDrawerOpen}
               toggleDrawer={toggleDrawer}
+              requests={requests}
+              trips={trips}
+              handleAcceptRequest={handleAcceptRequest}
+              handleRejectRequest={handleRejectRequest}
             />
           </div>
         ) : (

@@ -9,8 +9,16 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db, auth } from "@/lib/firebase";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import Header from "@/components/Header/Header";
 import TripDetailsDialog from "@/components/PopupForm/TripDetailsDialog";
@@ -56,6 +64,15 @@ const OtherTripsPage = () => {
 
   const handleCloseDetails = () => {
     setOpenDetails(false);
+  };
+
+  const handleJoinRequest = async (tripId) => {
+    if (!user) return;
+
+    const tripDocRef = doc(db, "Trips", tripId);
+    await updateDoc(tripDocRef, {
+      requests: arrayUnion(user.uid),
+    });
   };
 
   return (
@@ -117,6 +134,13 @@ const OtherTripsPage = () => {
                         onClick={() => handleOpenDetails(trip.id)}
                       >
                         View Details
+                      </Button>
+                      <Button
+                        variant="text"
+                        color="primary"
+                        onClick={() => handleJoinRequest(trip.id)}
+                      >
+                        Join request
                       </Button>
                     </Box>
                   </CardContent>
