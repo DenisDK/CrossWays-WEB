@@ -14,9 +14,11 @@ import { onAuthStateChanged } from "firebase/auth";
 // import { signOutUser } from "@/lib/signOut";
 import ProfileInfo from "./ProfileInfo";
 import LanguageSelector from "./LanguageSelector/LanguageSelector";
+import NotificationDrawer from "./NotificationDrawer/NotificationDrawer";
 
 const Header = () => {
   const [isUser, setIsUser] = useState(auth.currentUser);
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -29,6 +31,16 @@ const Header = () => {
 
     return () => unsubscribe(); // Очищення підписки
   }, []);
+
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setIsDrawerOpen(open);
+  };
 
   return (
     <div className="max-w-screen-xl mx-auto flex justify-between items-center my-5 px-2">
@@ -65,6 +77,10 @@ const Header = () => {
           <div className="flex justify-between items-center">
             <LanguageSelector />
             <ProfileInfo />
+            <NotificationDrawer
+              isDrawerOpen={isDrawerOpen}
+              toggleDrawer={toggleDrawer}
+            />
           </div>
         ) : (
           <div className="">
