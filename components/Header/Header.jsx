@@ -4,11 +4,8 @@ import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Nav from "./Nav/Nav";
 import Image from "next/image";
-// import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/routing";
-
-// Імпорт з Firebase
 import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import {
@@ -95,10 +92,19 @@ const Header = () => {
 
   const handleAcceptRequest = async (tripId, userId) => {
     const tripDocRef = doc(db, "Trips", tripId);
+    const userDocRef = doc(db, "Users", userId);
+
+    // Оновлення списку учасників тріпа
     await updateDoc(tripDocRef, {
       requests: arrayRemove(userId),
       participants: arrayUnion(userId),
     });
+
+    // Оновлення activeTravels користувача
+    await updateDoc(userDocRef, {
+      activeTravels: arrayUnion(tripId),
+    });
+
     // Оновлюємо стан requests та trips
     setRequests((prevRequests) =>
       prevRequests.filter((request) => request.userId !== userId)

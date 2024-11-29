@@ -3,6 +3,7 @@ import { Drawer, Badge, Button, Avatar, Typography } from "@mui/material";
 import { FaBell } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
+
 const NotificationDrawer = ({
   isDrawerOpen,
   toggleDrawer,
