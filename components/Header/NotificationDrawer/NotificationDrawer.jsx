@@ -3,6 +3,7 @@ import { Drawer, Badge, Button, Avatar, Typography } from "@mui/material";
 import { FaBell } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { FaCheck } from "react-icons/fa";
+import { Link } from "@/i18n/routing";
 
 const NotificationDrawer = ({
   isDrawerOpen,
@@ -38,9 +39,15 @@ const NotificationDrawer = ({
                 className="mb-4 flex items-center justify-between"
               >
                 <div className="flex items-center">
-                  <Avatar src={request.userAvatar} alt={request.userName} />
+                  <Link href={`/Users/${request.userId}`}>
+                    <Avatar src={request.userAvatar} alt={request.userName} />
+                  </Link>
                   <div className="ml-2">
-                    <Typography variant="body1">{request.userName}</Typography>
+                    <Link href={`/Users/${request.userId}`}>
+                      <Typography variant="body1" className="cursor-pointer">
+                        {request.userName}
+                      </Typography>
+                    </Link>
                     <Typography variant="body2">{trip.title}</Typography>
                   </div>
                 </div>
