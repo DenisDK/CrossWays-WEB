@@ -24,6 +24,7 @@ import { PiSignOutBold } from "react-icons/pi";
 import { FaUserCircle } from "react-icons/fa";
 import { GiCommercialAirplane } from "react-icons/gi";
 import { MdDelete } from "react-icons/md";
+import { MdModeOfTravel } from "react-icons/md";
 
 // Firebase
 import { auth, db } from "@/lib/firebase";
@@ -132,6 +133,14 @@ const UserProfile = () => {
                   <GiCommercialAirplane />
                 </ListItemIcon>
                 {t("usersTrips")}
+              </MenuItem>
+            </Link>
+            <Link href={"/TripsWithMe"}>
+              <MenuItem>
+                <ListItemIcon>
+                  <MdModeOfTravel />
+                </ListItemIcon>
+                Trips With Me
               </MenuItem>
             </Link>
             <Link href={"/Premium"}>
