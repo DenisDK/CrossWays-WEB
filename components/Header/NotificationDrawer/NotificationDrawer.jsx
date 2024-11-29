@@ -57,7 +57,7 @@ const NotificationDrawer = ({
                     onClick={() => handleRejectRequest(trip.id, request.userId)}
                     className="ml-2"
                   >
-                    <IoMdClose />
+                    <IoMdClose size={18} />
                   </Button>
                 </div>
               </div>
