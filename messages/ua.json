@@ -42,6 +42,8 @@
     "userGenderFemale": "Жіноча",
     "userPrivateAccountSwitch": "Приватний аккаунт",
     "userDateOfBirth": "День народження",
+    "usersSubscriptions": "Підписки",
+    "userHasNoSubs": "Тут ще нікого немає",
     "saveChangesButton": "зберегти зміни",
     "emptyFieldsError": "Будь ласка, заповніть усі обов'язкові поля (прізвище, стать, дата народження).",
     "correctErrorsMessage": "Зміни не збережено. Будь ласка, виправте помилки.",
@@ -93,5 +95,9 @@
     "authTitle": "Приєднуйтесь зараз",
     "authParagraph": "Приєднуйтесь до нашої спільноти зараз!",
     "homeButton": "Головна"
+  },
+  "Search": {
+    "searchTitle": "Пошук користувачів",
+    "searchTextLabel": "Пошук за нікнеймом"
   }
 }

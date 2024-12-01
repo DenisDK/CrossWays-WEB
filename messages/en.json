@@ -42,6 +42,8 @@
     "userGenderFemale": "Female",
     "userPrivateAccountSwitch": "Private account",
     "userDateOfBirth": "Birthday",
+    "usersSubscriptions": "Subscriptions",
+    "userHasNoSubs": "There is no one here yet",
     "saveChangesButton": "save changes",
     "emptyFieldsError": "Please fill in all required fields (Nickname, Gender, Date of Birth).",
     "correctErrorsMessage": "Changes were not saved. Please correct the errors.",
@@ -93,5 +95,9 @@
     "authTitle": "Join Now",
     "authParagraph": "Join our community now!",
     "homeButton": "Home"
+  },
+  "Search": {
+    "searchTitle": "Search Users",
+    "searchTextLabel": "Search by Nickname"
   }
 }
