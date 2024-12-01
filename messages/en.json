@@ -88,5 +88,10 @@
     "cardAdvancedTrips": "Unlimited trips",
     "cardAdvancedPrivate": "Availible private mode",
     "cardAdvancedAvatar": "Animated avatar"
+  },
+  "Authentication": {
+    "authTitle": "Join Now",
+    "authParagraph": "Join our community now!",
+    "homeButton": "Home"
   }
 }

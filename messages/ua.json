@@ -88,5 +88,10 @@
     "cardAdvancedTrips": "Необмежена кількість подородей",
     "cardAdvancedPrivate": "Доступний приватний режим",
     "cardAdvancedAvatar": "Анімований аватар"
+  },
+  "Authentication": {
+    "authTitle": "Приєднуйтесь зараз",
+    "authParagraph": "Приєднуйтесь до нашої спільноти зараз!",
+    "homeButton": "Головна"
   }
 }

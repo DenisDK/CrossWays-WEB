@@ -19,6 +19,7 @@ import { signInWithGoogle } from "@/lib/signIn";
 import { signInWithFacebook } from "@/lib/signIn";
 
 const JoinNow = () => {
+  const t = useTranslations("Authentication");
   const router = useRouter();
   const handleGoogleSignIn = () => signInWithGoogle(router);
   const handleFacebookSignIn = () => signInWithFacebook(router);
@@ -33,9 +34,9 @@ const JoinNow = () => {
           />
         </div>
         <h2 className="text-[#876447] text-center text-3xl font-bold py-3">
-          Join Now
+          {t("authTitle")}
         </h2>
-        <p className="text-[#876447] text-center">Join our community now!</p>
+        <p className="text-[#876447] text-center">{t("authParagraph")}</p>
         <AuthButton
           providerName={"Google"}
           providerIcon={<FcGoogle size={20} />}
@@ -52,7 +53,7 @@ const JoinNow = () => {
               className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447] mt-3"
               variant="text"
             >
-              Home
+              {t("homeButton")}
             </Button>
           </Link>
         </div>
