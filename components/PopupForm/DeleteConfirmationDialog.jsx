@@ -7,20 +7,22 @@ import {
   Button,
   Typography,
 } from "@mui/material";
+import { useTranslations } from "next-intl";
 
 const DeleteConfirmationDialog = ({ open, handleClose, handleConfirm }) => {
+  const t = useTranslations("Trips");
   return (
     <Dialog open={open} onClose={handleClose}>
-      <DialogTitle>Confirm Deletion</DialogTitle>
+      <DialogTitle>{t("tripDeletionTitle")}</DialogTitle>
       <DialogContent>
-        <Typography>Are you sure you want to delete this trip?</Typography>
+        <Typography>{t("tripDeletionParagraph")}</Typography>
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose} color="primary">
-          Cancel
+          {t("tripDeletionCancelButton")}
         </Button>
         <Button onClick={handleConfirm} color="error">
-          Delete
+          {t("tripDeletionDeleteButton")}
         </Button>
       </DialogActions>
     </Dialog>

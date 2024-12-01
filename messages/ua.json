@@ -99,5 +99,35 @@
   "Search": {
     "searchTitle": "Пошук користувачів",
     "searchTextLabel": "Пошук за нікнеймом"
+  },
+  "Trips": {
+    "tripDetails": "Деталі",
+    "tripChange": "Змінити",
+    "tripDeleteButton": "Видалити",
+    "tripCreationTitle": "Створити подорож",
+    "tripDetailsTitle": "Деталі подорожі",
+    "tripEditTitle": "Редагувати подорож",
+    "tripTitleLabel": "Заголовок",
+    "tripCountryLabel": "Країна",
+    "tripLimitLabel": "Ліміт учасників",
+    "tripDateFrom": "Дата (від)",
+    "tripDateTo": "Дата (до)",
+    "tripDetailsDateFrom": "Від",
+    "tripDetailsDateTo": "До",
+    "tripAbout": "Опис подорожі",
+    "tripDetailsDescription": "Опис",
+    "tripPhoto": "Завантажити фото",
+    "tripCreateButton": "Створити",
+    "tripEditSaveButton": "Зберегти",
+    "tripDetailsNotFound": "Подорож не знайдена",
+    "tripFillAllFieldsMessage": "Усі поля обов'язкові для заповнення.",
+    "tripCreationSuccesMessage": "Подорож успішно створено.",
+    "tripCreationErrorMessage": "Виникла помилка при створенні подорожі.",
+    "tripEditSuccesMessage": "Подорож успішно оновлено.",
+    "tripEditErrorMessage": "Виникла помилка при оновленні подорожі.",
+    "tripDeletionTitle": "Підтвердження видалення",
+    "tripDeletionParagraph": "Ви впевнені, що хочете видалити цю подорож?",
+    "tripDeletionCancelButton": "Скасувати",
+    "tripDeletionDeleteButton": "Видалити"
   }
 }

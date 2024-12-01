@@ -99,5 +99,35 @@
   "Search": {
     "searchTitle": "Search Users",
     "searchTextLabel": "Search by Nickname"
+  },
+  "Trips": {
+    "tripDetails": "View Details",
+    "tripChange": "Change",
+    "tripDeleteButton": "Delete",
+    "tripCreationTitle": "Create trip",
+    "tripDetailsTitle": "Trip Details",
+    "tripEditTitle": "Edit trip",
+    "tripTitleLabel": "Title",
+    "tripCountryLabel": "Country",
+    "tripLimitLabel": "Member limit",
+    "tripDateFrom": "Date (From)",
+    "tripDateTo": "Date (To)",
+    "tripDetailsDateFrom": "From",
+    "tripDetailsDateTo": "To",
+    "tripAbout": "About",
+    "tripDetailsDescription": "Description",
+    "tripPhoto": "Upload photo",
+    "tripCreateButton": "Create",
+    "tripEditSaveButton": "Save",
+    "tripDetailsNotFound": "Trip not found",
+    "tripFillAllFieldsMessage": "All fields are required.",
+    "tripCreationSuccesMessage": "Trip successfully created.",
+    "tripCreationErrorMessage": "Error creating trip.",
+    "tripEditSuccesMessage": "Trip successfully updated.",
+    "tripEditErrorMessage": "Error updating trip.",
+    "tripDeletionTitle": "Confirm Deletion",
+    "tripDeletionParagraph": "Are you sure you want to delete this trip?",
+    "tripDeletionCancelButton": "Cancel",
+    "tripDeletionDeleteButton": "Delete"
   }
 }

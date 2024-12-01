@@ -17,8 +17,10 @@ import dayjs from "dayjs";
 import { doc, getDoc, updateDoc, Timestamp } from "firebase/firestore";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db } from "@/lib/firebase";
+import { useTranslations } from "next-intl";
 
 const EditTripDialog = ({ open, handleClose, tripId }) => {
+  const t = useTranslations("Trips");
   const [title, setTitle] = useState("");
   const [country, setCountry] = useState("");
   const [memberLimit, setMemberLimit] = useState("");
@@ -76,7 +78,7 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
       setErrors(newErrors);
       setAlert({
         severity: "error",
-        message: "All fields are required.",
+        message: t("tripFillAllFieldsMessage"),
       });
       return;
     }
@@ -103,11 +105,11 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
     try {
       const tripDocRef = doc(db, "Trips", tripId);
       await updateDoc(tripDocRef, tripData);
-      setAlert({ severity: "success", message: "Trip successfully updated." });
+      setAlert({ severity: "success", message: t("tripEditSuccesMessage") });
       handleClose();
       resetForm();
     } catch (error) {
-      setAlert({ severity: "error", message: "Error updating trip." });
+      setAlert({ severity: "error", message: t("tripEditErrorMessage") });
     }
   };
 
@@ -138,7 +140,7 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
         fullWidth
         BackdropProps={{ onClick: handleClose }}
       >
-        <DialogTitle>Edit trip</DialogTitle>
+        <DialogTitle>{t("tripEditTitle")}</DialogTitle>
         <DialogContent>
           <Box display="flex" alignItems="stretch" mt={2}>
             <Box
@@ -160,7 +162,7 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
                 style={{ marginTop: "10px" }}
                 error={errors.photo ? "true" : "false"}
               >
-                Upload photo
+                {t("tripPhoto")}
                 <input type="file" hidden onChange={handlePhotoChange} />
               </Button>
             </Box>
@@ -171,21 +173,21 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
               justifyContent="space-between"
             >
               <TextField
-                label="Title"
+                label={t("tripTitleLabel")}
                 fullWidth
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 error={errors.title ? true : false}
               />
               <TextField
-                label="Country"
+                label={t("tripCountryLabel")}
                 fullWidth
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 error={errors.country ? true : false}
               />
               <TextField
-                label="Member limit"
+                label={t("tripLimitLabel")}
                 fullWidth
                 type="number"
                 value={memberLimit}
@@ -195,7 +197,7 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Box display="flex" justifyContent="space-between">
                   <DesktopDatePicker
-                    label="Date (From)"
+                    label={t("tripDateFrom")}
                     value={from}
                     onChange={(newValue) => setFrom(newValue)}
                     renderInput={(params) => (
@@ -207,7 +209,7 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
                     )}
                   />
                   <DesktopDatePicker
-                    label="Date (To)"
+                    label={t("tripDateTo")}
                     value={to}
                     onChange={(newValue) => setTo(newValue)}
                     renderInput={(params) => (
@@ -221,7 +223,7 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
                 </Box>
               </LocalizationProvider>
               <TextField
-                label="About"
+                label={t("tripAbout")}
                 fullWidth
                 multiline
                 rows={4}
@@ -236,7 +238,7 @@ const EditTripDialog = ({ open, handleClose, tripId }) => {
                 fullWidth
                 style={{ marginTop: "10px" }}
               >
-                Save
+                {t("tripEditSaveButton")}
               </Button>
             </Box>
           </Box>
