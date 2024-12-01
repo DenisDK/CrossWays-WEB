@@ -140,7 +140,7 @@ const UserProfile = () => {
                 <ListItemIcon>
                   <MdModeOfTravel />
                 </ListItemIcon>
-                Trips With Me
+                {t("usersTripsParticipation")}
               </MenuItem>
             </Link>
             <Link href={"/Premium"}>

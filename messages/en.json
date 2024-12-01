@@ -27,7 +27,8 @@
   },
   "MainPage": {
     "title": "Welcome back!",
-    "createTripButton": "Create a new trip"
+    "createTripButton": "Create a new trip",
+    "findNewTripButton": "find a new trip"
   },
   "Profile": {
     "addProfilePhoto": "upload photo",
@@ -62,6 +63,7 @@
   "ProfileInfo": {
     "usersProfile": "My profile",
     "usersTrips": "My trips",
+    "usersTripsParticipation": "Trips With Me",
     "usersVipStatus": "VIP status",
     "deleteAccount": "Delete Account",
     "deleteAccountDialogTitle": "Confirm Delete Account",
@@ -94,6 +96,7 @@
   "Authentication": {
     "authTitle": "Join Now",
     "authParagraph": "Join our community now!",
+    "authButton": "continue with",
     "homeButton": "Home"
   },
   "Search": {

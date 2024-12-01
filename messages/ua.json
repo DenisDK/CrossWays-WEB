@@ -27,7 +27,8 @@
   },
   "MainPage": {
     "title": "Ласкаво просимо!",
-    "createTripButton": "Створити нову подорож"
+    "createTripButton": "Створити подорож",
+    "findNewTripButton": "знайти подорож"
   },
   "Profile": {
     "addProfilePhoto": "завантажити фото",
@@ -62,6 +63,7 @@
   "ProfileInfo": {
     "usersProfile": "Мій профіль",
     "usersTrips": "Мої подорожі",
+    "usersTripsParticipation": "Подорожі зі мною",
     "usersVipStatus": "VIP статус",
     "deleteAccount": "Видалити акаунт",
     "deleteAccountDialogTitle": "Підтвердьте видалення акаунта",
@@ -94,6 +96,7 @@
   "Authentication": {
     "authTitle": "Приєднуйтесь зараз",
     "authParagraph": "Приєднуйтесь до нашої спільноти зараз!",
+    "authButton": "продовжити з",
     "homeButton": "Головна"
   },
   "Search": {
