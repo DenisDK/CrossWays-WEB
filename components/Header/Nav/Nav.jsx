@@ -17,22 +17,26 @@ const Nav = () => {
             </Button>
           </li>
         </Link>
-        <li>
-          <Button
-            className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
-            variant="text"
-          >
-            Explore
-          </Button>
-        </li>
-        <li>
-          <Button
-            className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
-            variant="text"
-          >
-            FAQ
-          </Button>
-        </li>
+        <Link href="MyTrips">
+          <li>
+            <Button
+              className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
+              variant="text"
+            >
+              My trips
+            </Button>
+          </li>
+        </Link>
+        <Link href="/OtherTrips">
+          <li>
+            <Button
+              className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
+              variant="text"
+            >
+              Find trips
+            </Button>
+          </li>
+        </Link>
         <Link href="/Users">
           <li>
             <Button
