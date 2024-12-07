@@ -14,6 +14,7 @@ import { IoMdAdd } from "react-icons/io";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { useTranslations } from "next-intl";
 import Header from "@/components/Header/Header";
 import PopupForm from "@/components/PopupForm/PopupForm";
 import TripDetailsDialog from "@/components/PopupForm/TripDetailsDialog";
@@ -22,6 +23,7 @@ import deleteTrip from "@/lib/deleteTrips";
 import DeleteConfirmationDialog from "@/components/PopupForm/DeleteConfirmationDialog";
 
 const TripsPage = () => {
+  const t = useTranslations("Trips");
   const [openCreate, setOpenCreate] = useState(false);
   const [openDetails, setOpenDetails] = useState(false);
   const [openEdit, setOpenEdit] = useState(false);
@@ -191,21 +193,21 @@ const TripsPage = () => {
                         color="primary"
                         onClick={() => handleOpenDetails(trip.id)}
                       >
-                        View Details
+                        {t("tripDetails")}
                       </Button>
                       <Button
                         variant="text"
                         color="primary"
                         onClick={() => handleOpenEdit(trip.id)}
                       >
-                        Change
+                        {t("tripChange")}
                       </Button>
                       <Button
                         variant="text"
                         color="error"
                         onClick={() => handleOpenDelete(trip.id)}
                       >
-                        Delete
+                        {t("tripDeleteButton")}
                       </Button>
                     </Box>
                   </CardContent>

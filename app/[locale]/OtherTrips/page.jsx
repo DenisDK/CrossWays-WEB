@@ -22,8 +22,10 @@ import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import Header from "@/components/Header/Header";
 import TripDetailsDialog from "@/components/PopupForm/TripDetailsDialog";
+import { useTranslations } from "next-intl";
 
 const OtherTripsPage = () => {
+  const t = useTranslations("Trips");
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -133,14 +135,14 @@ const OtherTripsPage = () => {
                         color="primary"
                         onClick={() => handleOpenDetails(trip.id)}
                       >
-                        View Details
+                        {t("tripDetails")}
                       </Button>
                       <Button
                         variant="text"
                         color="primary"
                         onClick={() => handleJoinRequest(trip.id)}
                       >
-                        Join request
+                        {t("tripJoinRequestButton")}
                       </Button>
                     </Box>
                   </CardContent>

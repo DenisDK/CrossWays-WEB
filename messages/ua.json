@@ -27,7 +27,8 @@
   },
   "MainPage": {
     "title": "Ласкаво просимо!",
-    "createTripButton": "Створити нову подорож"
+    "createTripButton": "Створити подорож",
+    "findNewTripButton": "знайти подорож"
   },
   "Profile": {
     "addProfilePhoto": "завантажити фото",
@@ -42,12 +43,27 @@
     "userGenderFemale": "Жіноча",
     "userPrivateAccountSwitch": "Приватний аккаунт",
     "userDateOfBirth": "День народження",
+    "usersSubscriptions": "Підписки",
+    "userHasNoSubs": "Тут ще нікого немає",
     "saveChangesButton": "зберегти зміни",
     "emptyFieldsError": "Будь ласка, заповніть усі обов'язкові поля (прізвище, стать, дата народження).",
     "correctErrorsMessage": "Зміни не збережено. Будь ласка, виправте помилки.",
     "alreadyTakenMessage": "Цей псевдонім уже зайнятий. Виберіть інший.",
     "successMessage": "Зміни успішно збережено.",
-    "errorMessage": "Зміни не збережено через помилку."
+    "errorMessage": "Зміни не збережено через помилку.",
+    "otherUserAge": "Років",
+    "otherUserPrivacy": "Статус",
+    "otherUserPrivacyPublic": "Публічний",
+    "otherUserPrivacyPrivate": "Приватний",
+    "otherUserVipStatus": "VIP статус",
+    "otherUserHasVip": "Так",
+    "otherUserNoVip": "Ні",
+    "otherUserFollowButton": "Підписатися",
+    "otherUserUnFollowButton": "Відписатися",
+    "notLoggedInMessage": "Користувач не авторизований",
+    "userDoesntExistMessage": "Поточний користувач не існує",
+    "followLimitMessage": "Користувачі без преміум підписки можуть стежити лише за однією особою",
+    "updatingCompanionsUpdateMessage": "Помилка оновлення TravelCompanions:"
   },
   "Premium": {
     "statusActive": "Преміум статус активний :)",
@@ -60,6 +76,7 @@
   "ProfileInfo": {
     "usersProfile": "Мій профіль",
     "usersTrips": "Мої подорожі",
+    "usersTripsParticipation": "Подорожі зі мною",
     "usersVipStatus": "VIP статус",
     "deleteAccount": "Видалити акаунт",
     "deleteAccountDialogTitle": "Підтвердьте видалення акаунта",
@@ -88,5 +105,46 @@
     "cardAdvancedTrips": "Необмежена кількість подородей",
     "cardAdvancedPrivate": "Доступний приватний режим",
     "cardAdvancedAvatar": "Анімований аватар"
+  },
+  "Authentication": {
+    "authTitle": "Приєднуйтесь зараз",
+    "authParagraph": "Приєднуйтесь до нашої спільноти зараз!",
+    "authButton": "продовжити з",
+    "homeButton": "Головна"
+  },
+  "Search": {
+    "searchTitle": "Пошук користувачів",
+    "searchTextLabel": "Пошук за нікнеймом"
+  },
+  "Trips": {
+    "tripDetails": "Деталі",
+    "tripChange": "Змінити",
+    "tripDeleteButton": "Видалити",
+    "tripJoinRequestButton": "Приєднатися",
+    "tripCreationTitle": "Створити подорож",
+    "tripDetailsTitle": "Деталі подорожі",
+    "tripEditTitle": "Редагувати подорож",
+    "tripTitleLabel": "Заголовок",
+    "tripCountryLabel": "Країна",
+    "tripLimitLabel": "Ліміт учасників",
+    "tripDateFrom": "Дата (від)",
+    "tripDateTo": "Дата (до)",
+    "tripDetailsDateFrom": "Від",
+    "tripDetailsDateTo": "До",
+    "tripAbout": "Опис подорожі",
+    "tripDetailsDescription": "Опис",
+    "tripPhoto": "Завантажити фото",
+    "tripCreateButton": "Створити",
+    "tripEditSaveButton": "Зберегти",
+    "tripDetailsNotFound": "Подорож не знайдена",
+    "tripFillAllFieldsMessage": "Усі поля обов'язкові для заповнення.",
+    "tripCreationSuccesMessage": "Подорож успішно створено.",
+    "tripCreationErrorMessage": "Виникла помилка при створенні подорожі.",
+    "tripEditSuccesMessage": "Подорож успішно оновлено.",
+    "tripEditErrorMessage": "Виникла помилка при оновленні подорожі.",
+    "tripDeletionTitle": "Підтвердження видалення",
+    "tripDeletionParagraph": "Ви впевнені, що хочете видалити цю подорож?",
+    "tripDeletionCancelButton": "Скасувати",
+    "tripDeletionDeleteButton": "Видалити"
   }
 }

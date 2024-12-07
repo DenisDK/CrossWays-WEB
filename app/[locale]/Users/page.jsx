@@ -11,6 +11,7 @@ import Header from "@/components/Header/Header";
 import { collection, getDocs } from "firebase/firestore";
 import { db, auth } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { useTranslations } from "next-intl";
 
 const columns = [
   {
@@ -37,6 +38,7 @@ const columns = [
 ];
 
 const UserSearchPage = () => {
+  const t = useTranslations("Search");
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
@@ -128,9 +130,12 @@ const UserSearchPage = () => {
     <>
       <Header />
       <div className="max-w-screen-xl mx-auto mt-12 px-3">
-        <h2 className="text-2xl font-bold text-[#876447]">Search Users</h2>
+        <h2 className="text-2xl font-bold text-[#876447]">
+          {t("searchTitle")}
+        </h2>
         <TextField
-          label="Search by Nickname"
+          // label="Search by Nickname"
+          label={t("searchTextLabel")}
           variant="outlined"
           fullWidth
           margin="normal"

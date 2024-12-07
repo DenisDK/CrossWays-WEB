@@ -15,8 +15,10 @@ import { auth, db } from "@/lib/firebase";
 import { useParams } from "next/navigation";
 import { Alert, Button, CircularProgress, Snackbar } from "@mui/material";
 import { GiLaurelCrown } from "react-icons/gi";
+import { useTranslations } from "next-intl";
 
 const OtherUserProfilePage = () => {
+  const t = useTranslations("Profile");
   const { id } = useParams(); // ID користувача, на якого ви дивитесь
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -88,7 +90,7 @@ const OtherUserProfilePage = () => {
   const handleFollowToggle = async () => {
     const currentUser = auth.currentUser;
     if (!currentUser) {
-      showAlert("User not logged in");
+      showAlert(t("notLoggedInMessage"));
       return;
     }
 
@@ -96,7 +98,7 @@ const OtherUserProfilePage = () => {
     const currentUserSnapshot = await getDoc(currentUserDoc);
 
     if (!currentUserSnapshot.exists()) {
-      showAlert("Current user document does not exist");
+      showAlert(t("userDoesntExistMessage"));
       return;
     }
 
@@ -106,7 +108,7 @@ const OtherUserProfilePage = () => {
 
     // Перевірка на кількість підписок для непреміум користувачів (не більше одного, можна змінити)
     if (!isPremium && !isFollowing && travelCompanions.length >= 1) {
-      showAlert("Non-premium users can only follow one person");
+      showAlert(t("followLimitMessage"));
       return;
     }
 
@@ -125,7 +127,7 @@ const OtherUserProfilePage = () => {
         setIsFollowing(true);
       }
     } catch (error) {
-      showAlert("Error updating travelCompanions: " + error.message);
+      showAlert(t("updatingCompanionsUpdateMessage") + error.message);
     }
   };
 
@@ -163,7 +165,7 @@ const OtherUserProfilePage = () => {
                 color="error"
                 onClick={handleFollowToggle}
               >
-                UnFollow
+                {t("otherUserUnFollowButton")}
               </Button>
             ) : (
               <Button
@@ -171,30 +173,38 @@ const OtherUserProfilePage = () => {
                 variant="contained"
                 onClick={handleFollowToggle}
               >
-                Follow
+                {t("otherUserFollowButton")}
               </Button>
             )}
           </div>
 
           <div className="flex flex-col flex-grow gap-6 pl-6">
             <div className="bg-[#e9b08254] p-5 rounded-xl w-[700px]">
-              <span className="font-bold text-2xl mr-3">About Me:</span>
+              <span className="font-bold text-2xl mr-3">
+                {t("userAboutMe")}:
+              </span>
               <span className="text-xl">{profileData?.aboutMe || "N/A"}</span>
             </div>
             <div className="bg-[#e9b08254] p-5 h-full flex flex-col gap-6 rounded-xl">
               <div>
-                <span className="font-bold text-2xl mr-3">Gender:</span>
+                <span className="font-bold text-2xl mr-3">
+                  {t("userGender")}:
+                </span>
                 <span className="text-xl">{profileData?.gender || "N/A"}</span>
               </div>
               <div>
-                <span className="font-bold text-2xl mr-3">Date of Birth:</span>
+                <span className="font-bold text-2xl mr-3">
+                  {t("userDateOfBirth")}:
+                </span>
                 <span className="text-xl">
                   {profileData?.birthday?.toDate().toLocaleDateString() ||
                     "N/A"}
                 </span>
               </div>
               <div>
-                <span className="font-bold text-2xl mr-3">Years:</span>
+                <span className="font-bold text-2xl mr-3">
+                  {t("otherUserAge")}:
+                </span>
                 <span className="text-xl">
                   {profileData?.birthday
                     ? calculateAge(profileData.birthday)
@@ -203,22 +213,26 @@ const OtherUserProfilePage = () => {
               </div>
               <div>
                 <span className="font-bold text-2xl mr-3">
-                  Account Privacy:
+                  {t("otherUserPrivacy")}:
                 </span>
                 <span className="text-xl">
-                  {profileData?.isPrivate ? "Private" : "Public"}
+                  {profileData?.isPrivate
+                    ? t("otherUserPrivacyPrivate")
+                    : t("otherUserPrivacyPublic")}
                 </span>
               </div>
               <div className="flex items-center">
-                <span className="font-bold text-2xl mr-3">VIP Status:</span>
+                <span className="font-bold text-2xl mr-3">
+                  {t("otherUserVipStatus")}:
+                </span>
                 <span className="text-xl flex">
                   {profileData?.isPremium ? (
                     <span className="flex items-center">
-                      <span className="mr-2">Yes</span>
+                      <span className="mr-2">{t("otherUserHasVip")}</span>
                       <GiLaurelCrown size={40} color="orange" />
                     </span>
                   ) : (
-                    "No"
+                    t("otherUserNoVip")
                   )}
                 </span>
               </div>

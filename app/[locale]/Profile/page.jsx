@@ -309,16 +309,13 @@ const ProfilePage = () => {
             <label htmlFor="file-upload">
               <Button variant="contained" color="primary" component="span">
                 <FaCloudUploadAlt size={17} className="mr-2" />
-                {/* upload photo */}
                 {t("addProfilePhoto")}
               </Button>
             </label>
             <Typography variant="h5" className="mt-5 font-bold">
-              {/* {profileData?.name || "User Name"} */}
               {profileData?.name || t("userName")}
             </Typography>
             <Typography variant="h6" className="font-bold">
-              {/* {profileData?.nickname || "NickName"} */}
               {profileData?.nickname || t("userNickname")}
             </Typography>
             <Rating className="mt-2" name="read-only" value={5} readOnly />
@@ -329,7 +326,6 @@ const ProfilePage = () => {
             <div className="flex gap-6">
               <Tooltip title={t("userNameTooltip")}>
                 <TextField
-                  // label="Name"
                   label={t("userName")}
                   variant="standard"
                   fullWidth
@@ -339,7 +335,6 @@ const ProfilePage = () => {
               </Tooltip>
               <Tooltip title={t("userNicknameTooltip")}>
                 <TextField
-                  // label="Nickname"
                   label={t("userNickname")}
                   variant="standard"
                   fullWidth
@@ -352,7 +347,6 @@ const ProfilePage = () => {
 
             <Tooltip title={t("userAboutMeTooltip")}>
               <TextField
-                // label="About Me"
                 label={t("userAboutMe")}
                 variant="standard"
                 fullWidth
@@ -363,10 +357,7 @@ const ProfilePage = () => {
             </Tooltip>
 
             <FormControl error={errors.gender}>
-              <FormLabel>
-                {/* Gender */}
-                {t("userGender")}
-              </FormLabel>
+              <FormLabel>{t("userGender")}</FormLabel>
               <RadioGroup
                 row
                 value={gender}
@@ -375,13 +366,11 @@ const ProfilePage = () => {
                 <FormControlLabel
                   value="Male"
                   control={<Radio />}
-                  // label="Male"
                   label={t("userGenderMale")}
                 />
                 <FormControlLabel
                   value="Female"
                   control={<Radio />}
-                  // label="Female"
                   label={t("userGenderFemale")}
                 />
               </RadioGroup>
@@ -389,7 +378,6 @@ const ProfilePage = () => {
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DesktopDatePicker
-                // label="Date of Birth"
                 label={t("userDateOfBirth")}
                 value={birthday}
                 onChange={(newValue) => setBirthday(newValue)}
@@ -415,15 +403,16 @@ const ProfilePage = () => {
               fullWidth
               onClick={saveProfileData}
             >
-              {/* Save Changes */}
               {t("saveChangesButton")}
             </Button>
           </div>
           <div className="flex flex-col w-1/4 mt-8">
-            <div className="text-lg font-bold pl-4">Subscriptions</div>
+            <div className="text-lg font-bold pl-4">
+              {t("usersSubscriptions")}
+            </div>
             {travelCompanions.length === 0 ? (
               <div className="text-gray-500 italic mt-4 pl-4">
-                There is no one here yet
+                {t("userHasNoSubs")}
               </div>
             ) : (
               <List>

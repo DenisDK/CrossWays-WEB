@@ -12,8 +12,10 @@ import {
 } from "@mui/material";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
+import { useTranslations } from "next-intl";
 
 const TripDetailsDialog = ({ open, onClose, tripId }) => {
+  const t = useTranslations("Trips");
   const [trip, setTrip] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -41,7 +43,9 @@ const TripDetailsDialog = ({ open, onClose, tripId }) => {
 
   return (
     <Dialog open={open} onClose={onClose} maxWidth="md" fullWidth>
-      <DialogTitle className="text-[#876447]">Trip Details</DialogTitle>
+      <DialogTitle className="text-[#876447]">
+        {t("tripDetailsTitle")}
+      </DialogTitle>
       <DialogContent>
         {loading ? (
           <Box
@@ -65,47 +69,54 @@ const TripDetailsDialog = ({ open, onClose, tripId }) => {
             </Box>
             <Box className="">
               <Typography className="text-[#876447]" variant="h4">
-                <span className="font-bold mr-2">Title:</span>
+                <span className="font-bold mr-2">{t("tripTitleLabel")}:</span>
                 {trip.title}
               </Typography>
               <Typography
                 className="text-[#876447] text-xl mt-2"
                 variant="body2"
               >
-                <span className="font-bold mr-2">Country:</span> {trip.country}
+                <span className="font-bold mr-2">{t("tripCountryLabel")}:</span>{" "}
+                {trip.country}
               </Typography>
               <Typography
                 className="text-[#876447] text-xl mt-2"
                 variant="body2"
               >
-                <span className="font-bold mr-2">Member limit:</span>{" "}
+                <span className="font-bold mr-2">{t("tripLimitLabel")}:</span>{" "}
                 {trip.memberLimit}
               </Typography>
               <Typography
                 className="text-[#876447] text-xl mt-2"
                 variant="body2"
               >
-                <span className="font-bold mr-2">From:</span>{" "}
+                <span className="font-bold mr-2">
+                  {t("tripDetailsDateFrom")}:
+                </span>{" "}
                 {trip.from.toDate().toDateString()}
               </Typography>
               <Typography
                 className="text-[#876447] text-xl mt-2"
                 variant="body2"
               >
-                <span className="font-bold mr-2">To:</span>{" "}
+                <span className="font-bold mr-2">
+                  {t("tripDetailsDateTo")}:
+                </span>{" "}
                 {trip.to.toDate().toDateString()}
               </Typography>
               <Typography
                 className="text-[#876447] text-xl mt-2"
                 variant="body1"
               >
-                <span className="font-bold mr-2">Description:</span>{" "}
+                <span className="font-bold mr-2">
+                  {t("tripDetailsDescription")}:
+                </span>{" "}
                 {trip.description}
               </Typography>
             </Box>
           </Box>
         ) : (
-          <Typography variant="h6">Trip not found</Typography>
+          <Typography variant="h6">{t("tripDetailsNotFound")}</Typography>
         )}
       </DialogContent>
     </Dialog>

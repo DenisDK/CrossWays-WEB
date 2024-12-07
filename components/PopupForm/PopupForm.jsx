@@ -13,9 +13,11 @@ import {
 } from "@mui/material";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { useTranslations } from "next-intl";
 import createTrip from "@/lib/createTrips";
 
 const PopupForm = ({ open, handleClose }) => {
+  const t = useTranslations("Trips");
   const [title, setTitle] = useState("");
   const [country, setCountry] = useState("");
   const [memberLimit, setMemberLimit] = useState("");
@@ -47,7 +49,7 @@ const PopupForm = ({ open, handleClose }) => {
       setErrors(newErrors);
       setAlert({
         severity: "error",
-        message: "All fields are required.",
+        message: t("tripFillAllFieldsMessage"),
       });
       return;
     }
@@ -63,11 +65,14 @@ const PopupForm = ({ open, handleClose }) => {
 
     try {
       await createTrip(tripData);
-      setAlert({ severity: "success", message: "Trip successfully created." });
+      setAlert({
+        severity: "success",
+        message: t("tripCreationSuccesMessage"),
+      });
       handleClose();
       resetForm();
     } catch (error) {
-      setAlert({ severity: "error", message: "Error creating trip." });
+      setAlert({ severity: "error", message: t("tripCreationErrorMessage") });
     }
   };
 
@@ -92,7 +97,7 @@ const PopupForm = ({ open, handleClose }) => {
   return (
     <>
       <Dialog open={open} onClose={handleClose} maxWidth="md" fullWidth>
-        <DialogTitle>Create trip</DialogTitle>
+        <DialogTitle>{t("tripCreationTitle")}</DialogTitle>
         <DialogContent>
           <Box display="flex" alignItems="stretch" mt={2}>
             <Box
@@ -114,7 +119,7 @@ const PopupForm = ({ open, handleClose }) => {
                 style={{ marginTop: "10px" }}
                 error={errors.photo ? "true" : "false"}
               >
-                Upload phote
+                {t("tripPhoto")}
                 <input type="file" hidden onChange={handlePhotoChange} />
               </Button>
             </Box>
@@ -125,21 +130,21 @@ const PopupForm = ({ open, handleClose }) => {
               justifyContent="space-between"
             >
               <TextField
-                label="Title"
+                label={t("tripTitleLabel")}
                 fullWidth
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 error={errors.title ? true : false}
               />
               <TextField
-                label="Country"
+                label={t("tripCountryLabel")}
                 fullWidth
                 value={country}
                 onChange={(e) => setCountry(e.target.value)}
                 error={errors.country ? true : false}
               />
               <TextField
-                label="Member limit"
+                label={t("tripLimitLabel")}
                 fullWidth
                 type="number"
                 value={memberLimit}
@@ -149,7 +154,7 @@ const PopupForm = ({ open, handleClose }) => {
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Box display="flex" justifyContent="space-between">
                   <DesktopDatePicker
-                    label="Date (From)"
+                    label={t("tripDateFrom")}
                     value={dateFrom}
                     onChange={(newValue) => setDateFrom(newValue)}
                     renderInput={(params) => (
@@ -161,7 +166,7 @@ const PopupForm = ({ open, handleClose }) => {
                     )}
                   />
                   <DesktopDatePicker
-                    label="Date (To)"
+                    label={t("tripDateTo")}
                     value={dateTo}
                     onChange={(newValue) => setDateTo(newValue)}
                     renderInput={(params) => (
@@ -175,7 +180,7 @@ const PopupForm = ({ open, handleClose }) => {
                 </Box>
               </LocalizationProvider>
               <TextField
-                label="About"
+                label={t("tripAbout")}
                 fullWidth
                 multiline
                 rows={4}
@@ -190,7 +195,7 @@ const PopupForm = ({ open, handleClose }) => {
                 fullWidth
                 style={{ marginTop: "10px" }}
               >
-                Create
+                {t("tripCreateButton")}
               </Button>
             </Box>
           </Box>

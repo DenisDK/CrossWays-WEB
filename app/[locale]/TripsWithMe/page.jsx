@@ -15,8 +15,10 @@ import { auth, db } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import TripDetailsDialog from "@/components/PopupForm/TripDetailsDialog";
+import { useTranslations } from "next-intl";
 
 const TripsWithMePage = () => {
+  const t = useTranslations("Trips");
   const [trips, setTrips] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -120,7 +122,7 @@ const TripsWithMePage = () => {
                         color="primary"
                         onClick={() => handleOpenDetails(trip.id)}
                       >
-                        View Details
+                        {t("tripDetails")}
                       </Button>
                     </Box>
                   </CardContent>
