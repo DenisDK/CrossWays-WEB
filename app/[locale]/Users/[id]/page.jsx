@@ -10,12 +10,30 @@ import {
   updateDoc,
   arrayUnion,
   arrayRemove,
+  collection,
+  addDoc,
+  query,
+  where,
+  onSnapshot,
+  Timestamp,
+  deleteDoc,
 } from "firebase/firestore";
 import { auth, db } from "@/lib/firebase";
 import { useParams } from "next/navigation";
-import { Alert, Button, CircularProgress, Snackbar } from "@mui/material";
+import {
+  Alert,
+  Button,
+  CircularProgress,
+  Snackbar,
+  TextField,
+  IconButton,
+} from "@mui/material";
 import { GiLaurelCrown } from "react-icons/gi";
 import { useTranslations } from "next-intl";
+import { IoIosSend } from "react-icons/io";
+import { MdDelete } from "react-icons/md";
+import { MdEdit } from "react-icons/md";
+import { FaCheck } from "react-icons/fa";
 
 const OtherUserProfilePage = () => {
   const t = useTranslations("Profile");
@@ -28,6 +46,11 @@ const OtherUserProfilePage = () => {
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [alertSeverity, setAlertSeverity] = useState("error");
+
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState([]);
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingCommentText, setEditingCommentText] = useState("");
 
   const handleSnackbarClose = () => {
     setSnackBarOpen(false);
@@ -71,6 +94,24 @@ const OtherUserProfilePage = () => {
     };
 
     fetchProfileData();
+  }, [id]);
+
+  useEffect(() => {
+    if (!id) return;
+
+    const q = query(
+      collection(db, "Users", id, "FeedbackComment"),
+      where("createdAt", "!=", null)
+    );
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const commentsData = [];
+      querySnapshot.forEach((doc) => {
+        commentsData.push({ ...doc.data(), id: doc.id });
+      });
+      setComments(commentsData);
+    });
+
+    return () => unsubscribe();
   }, [id]);
 
   const calculateAge = (birthday) => {
@@ -128,6 +169,71 @@ const OtherUserProfilePage = () => {
       }
     } catch (error) {
       showAlert(t("updatingCompanionsUpdateMessage") + error.message);
+    }
+  };
+
+  const handleCommentSubmit = async () => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      showAlert(t("notLoggedInMessage"));
+      return;
+    }
+
+    try {
+      const userDoc = await getDoc(doc(db, "Users", currentUser.uid));
+      const userName = userDoc.exists() ? userDoc.data().name : "Anonymous";
+
+      await addDoc(collection(db, "Users", id, "FeedbackComment"), {
+        text: comment,
+        authorId: currentUser.uid,
+        authorName: userName,
+        createdAt: Timestamp.now(),
+      });
+      setComment("");
+    } catch (error) {
+      showAlert(t("commentSubmitError") + error.message);
+    }
+  };
+
+  const handleCommentDelete = async (commentId) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      showAlert(t("notLoggedInMessage"));
+      return;
+    }
+
+    try {
+      await deleteDoc(doc(db, "Users", id, "FeedbackComment", commentId));
+      showAlert("Коментар успишно видалено", "success");
+    } catch (error) {
+      showAlert("Виникла помилка" + error.message);
+    }
+  };
+
+  const handleEditComment = (commentId, currentText) => {
+    setEditingCommentId(commentId);
+    setEditingCommentText(currentText);
+  };
+
+  const handleSaveEditedComment = async () => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      showAlert(t("notLoggedInMessage"));
+      return;
+    }
+
+    try {
+      await updateDoc(
+        doc(db, "Users", id, "FeedbackComment", editingCommentId),
+        {
+          text: editingCommentText,
+        }
+      );
+      setEditingCommentId(null);
+      setEditingCommentText("");
+      showAlert("Коменрат успишно змінено", "success");
+    } catch (error) {
+      showAlert("Виникла помилка" + error.message);
     }
   };
 
@@ -239,14 +345,84 @@ const OtherUserProfilePage = () => {
             </div>
           </div>
         </div>
+
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex items-center mt-6 w-[1024px]">
+            <TextField
+              label="Comment"
+              variant="standard"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+              fullWidth
+            />
+            <IconButton color="primary" onClick={handleCommentSubmit}>
+              <IoIosSend />
+            </IconButton>
+          </div>
+
+          <div className="mt-6 w-[1024px]">
+            <h2 className="text-2xl font-bold">Сomments</h2>
+            {comments.map((comment) => (
+              <div
+                key={comment.id}
+                className="bg-[#e9b08254] p-4 rounded-xl mt-4 flex justify-between items-center"
+              >
+                <div>
+                  <div className="font-bold">{comment.authorName}</div>
+                  {editingCommentId === comment.id ? (
+                    <TextField
+                      value={editingCommentText}
+                      onChange={(e) => setEditingCommentText(e.target.value)}
+                      variant="outlined"
+                      fullWidth
+                    />
+                  ) : (
+                    <div>{comment.text}</div>
+                  )}
+                  <div className="text-sm text-gray-500">
+                    {comment.createdAt.toDate().toLocaleString()}
+                  </div>
+                </div>
+                {auth.currentUser &&
+                  auth.currentUser.uid === comment.authorId && (
+                    <div>
+                      {editingCommentId === comment.id ? (
+                        <IconButton
+                          color="primary"
+                          onClick={handleSaveEditedComment}
+                        >
+                          <FaCheck />
+                        </IconButton>
+                      ) : (
+                        <IconButton
+                          color="primary"
+                          onClick={() =>
+                            handleEditComment(comment.id, comment.text)
+                          }
+                        >
+                          <MdEdit />
+                        </IconButton>
+                      )}
+                      <IconButton
+                        color="error"
+                        onClick={() => handleCommentDelete(comment.id)}
+                      >
+                        <MdDelete />
+                      </IconButton>
+                    </div>
+                  )}
+              </div>
+            ))}
+          </div>
+        </div>
+        <Snackbar
+          open={snackBarOpen}
+          autoHideDuration={3000}
+          onClose={handleSnackbarClose}
+        >
+          <Alert severity={alertSeverity}>{alertMessage}</Alert>
+        </Snackbar>
       </div>
-      <Snackbar
-        open={snackBarOpen}
-        autoHideDuration={3000}
-        onClose={handleSnackbarClose}
-      >
-        <Alert severity={alertSeverity}>{alertMessage}</Alert>
-      </Snackbar>
     </div>
   );
 };
