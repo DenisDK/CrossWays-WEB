@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Fab,
   Card,
@@ -11,105 +11,44 @@ import {
   Button,
 } from "@mui/material";
 import { IoMdAdd } from "react-icons/io";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { db, auth } from "@/lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import { useTranslations } from "next-intl";
 import Header from "@/components/Header/Header";
 import PopupForm from "@/components/PopupForm/PopupForm";
 import TripDetailsDialog from "@/components/PopupForm/TripDetailsDialog";
 import EditTripDialog from "@/components/PopupForm/EditTripDialog";
-import deleteTrip from "@/lib/deleteTrips";
 import DeleteConfirmationDialog from "@/components/PopupForm/DeleteConfirmationDialog";
+import useTripDialogs from "@/hooks/myTrips/useTripDialogs";
+import deleteTrip from "@/lib/deleteTrips";
+import useTrips from "@/hooks/myTrips/useTrips";
 
 const TripsPage = () => {
   const t = useTranslations("Trips");
-  const [openCreate, setOpenCreate] = useState(false);
-  const [openDetails, setOpenDetails] = useState(false);
-  const [openEdit, setOpenEdit] = useState(false);
-  const [openDelete, setOpenDelete] = useState(false);
-  const [trips, setTrips] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  const [selectedTripId, setSelectedTripId] = useState(null);
-
-  const handleClickOpenCreate = () => {
-    setOpenCreate(true);
-  };
-
-  const handleCloseCreate = () => {
-    setOpenCreate(false);
-  };
-
-  const handleOpenDetails = (tripId) => {
-    setSelectedTripId(tripId);
-    setOpenDetails(true);
-  };
-
-  const handleCloseDetails = () => {
-    setOpenDetails(false);
-  };
-
-  const handleOpenEdit = (tripId) => {
-    setSelectedTripId(tripId);
-    setOpenEdit(true);
-  };
-
-  const handleCloseEdit = () => {
-    setOpenEdit(false);
-  };
-
-  const handleOpenDelete = (tripId) => {
-    setSelectedTripId(tripId);
-    setOpenDelete(true);
-  };
-
-  const handleCloseDelete = () => {
-    setOpenDelete(false);
-  };
+  const {
+    openCreate,
+    openDetails,
+    openEdit,
+    openDelete,
+    selectedTripId,
+    handleClickOpenCreate,
+    handleCloseCreate,
+    handleOpenDetails,
+    handleCloseDetails,
+    handleOpenEdit,
+    handleCloseEdit,
+    handleOpenDelete,
+    handleCloseDelete,
+  } = useTripDialogs();
+  const { trips, loading, user, fetchTrips } = useTrips();
 
   const handleConfirmDelete = async () => {
     try {
       await deleteTrip(selectedTripId);
-      setTrips(trips.filter((trip) => trip.id !== selectedTripId));
-      setOpenDelete(false);
+      fetchTrips(user.uid);
+      handleCloseDelete();
     } catch (error) {
       console.error("Error deleting trip: ", error);
     }
   };
-
-  const fetchTrips = async (userId) => {
-    setLoading(true);
-    const q = query(collection(db, "Trips"), where("creatorId", "==", userId));
-    const querySnapshot = await getDocs(q);
-    const tripsList = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setTrips(tripsList);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        fetchTrips(currentUser.uid);
-      } else {
-        setUser(null);
-        setTrips([]);
-        setLoading(false);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (!openCreate && user) {
-      fetchTrips(user.uid);
-    }
-  }, [openCreate, user]);
 
   return (
     <div className="relative">
