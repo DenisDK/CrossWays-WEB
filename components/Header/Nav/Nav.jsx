@@ -17,7 +17,7 @@ const Nav = () => {
             </Button>
           </li>
         </Link>
-        <Link href="MyTrips">
+        <Link href="/MyTrips">
           <li>
             <Button
               className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
