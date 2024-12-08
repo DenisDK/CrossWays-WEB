@@ -22,6 +22,7 @@ import {
   ListItemAvatar,
   ListItemText,
   IconButton,
+  Divider,
 } from "@mui/material";
 import { LocalizationProvider, DesktopDatePicker } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -65,7 +66,7 @@ const ProfilePage = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [travelCompanions, setTravelCompanions] = useState([]);
   const [isPremium, setIsPremium] = useState(false);
-
+  const [comments, setComments] = useState([]);
   // Для сповіщень
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("success");
@@ -123,6 +124,32 @@ const ProfilePage = () => {
       };
 
       fetchTravelCompanions();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    if (user) {
+      const fetchComments = async () => {
+        try {
+          const commentsRef = collection(
+            db,
+            "Users",
+            user.uid,
+            "FeedbackComment"
+          );
+          const q = query(commentsRef, where("createdAt", "!=", null));
+          const querySnapshot = await getDocs(q);
+          const commentsData = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setComments(commentsData);
+        } catch (error) {
+          console.error("Failed to fetch comments:", error);
+        }
+      };
+
+      fetchComments();
     }
   }, [user]);
 
@@ -290,7 +317,7 @@ const ProfilePage = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col min-h-screen items-center justify-center -mt-28">
+      <div className="flex flex-col min-h-screen items-center justify-center">
         <div className="flex justify-between w-full max-w-screen-xl gap-5">
           <div className="flex flex-col items-center w-1/5 mt-8">
             <Avatar
@@ -451,6 +478,51 @@ const ProfilePage = () => {
               </List>
             )}
           </div>
+        </div>
+        <div className="w-full max-w-screen-xl mt-8">
+          <Typography variant="h6" className="font-bold mb-4">
+            Сomments
+          </Typography>
+          <List>
+            {comments.map((comment) => (
+              <React.Fragment key={comment.id}>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Avatar
+                      alt={comment.authorName}
+                      src={comment.authorAvatar || "/noavatar.png"}
+                    />
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={
+                      <Typography variant="body1" fontWeight="bold">
+                        {comment.authorName}
+                      </Typography>
+                    }
+                    secondary={
+                      <>
+                        <Typography
+                          sx={{ display: "inline" }}
+                          component="span"
+                          variant="body2"
+                          color="text.primary"
+                        >
+                          {comment.text}
+                        </Typography>
+                        <br />
+                        <Typography variant="caption" color="text.secondary">
+                          {dayjs(comment.createdAt.toDate()).format(
+                            "DD/MM/YYYY"
+                          )}
+                        </Typography>
+                      </>
+                    }
+                  />
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </React.Fragment>
+            ))}
+          </List>
         </div>
       </div>
 
