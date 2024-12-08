@@ -34,6 +34,7 @@ import { IoIosSend } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
+import dayjs from "dayjs";
 
 const OtherUserProfilePage = () => {
   const t = useTranslations("Profile");
@@ -245,7 +246,7 @@ const OtherUserProfilePage = () => {
     );
 
   return (
-    <div>
+    <div className="pb-5">
       <Header />
       <div className="flex flex-col items-center justify-center mt-48">
         <div className="flex justify-between max-w-screen-lg">
@@ -380,7 +381,7 @@ const OtherUserProfilePage = () => {
                     <div>{comment.text}</div>
                   )}
                   <div className="text-sm text-gray-500">
-                    {comment.createdAt.toDate().toLocaleString()}
+                    {dayjs(comment.createdAt.toDate()).format("DD/MM/YYYY")}
                   </div>
                 </div>
                 {auth.currentUser &&

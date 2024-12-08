@@ -317,7 +317,7 @@ const ProfilePage = () => {
   return (
     <div>
       <Header />
-      <div className="flex flex-col min-h-screen items-center justify-center">
+      <div className="flex flex-col min-h-screen items-center justify-center mt-20">
         <div className="flex justify-between w-full max-w-screen-xl gap-5">
           <div className="flex flex-col items-center w-1/5 mt-8">
             <Avatar
@@ -479,7 +479,7 @@ const ProfilePage = () => {
             )}
           </div>
         </div>
-        <div className="w-full max-w-screen-xl mt-8">
+        <div className="w-full max-w-screen-xl mt-10 px-10">
           <Typography variant="h6" className="font-bold mb-4">
             Сomments
           </Typography>
@@ -487,15 +487,9 @@ const ProfilePage = () => {
             {comments.map((comment) => (
               <React.Fragment key={comment.id}>
                 <ListItem alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar
-                      alt={comment.authorName}
-                      src={comment.authorAvatar || "/noavatar.png"}
-                    />
-                  </ListItemAvatar>
                   <ListItemText
                     primary={
-                      <Typography variant="body1" fontWeight="bold">
+                      <Typography variant="h6" fontWeight="bold">
                         {comment.authorName}
                       </Typography>
                     }
@@ -504,7 +498,7 @@ const ProfilePage = () => {
                         <Typography
                           sx={{ display: "inline" }}
                           component="span"
-                          variant="body2"
+                          variant="body1"
                           color="text.primary"
                         >
                           {comment.text}
