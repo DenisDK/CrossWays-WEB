@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Card,
   CardMedia,
@@ -9,64 +9,19 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  doc,
-  updateDoc,
-  arrayUnion,
-} from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { doc, updateDoc, arrayUnion } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 import Header from "@/components/Header/Header";
 import TripDetailsDialog from "@/components/PopupForm/TripDetailsDialog";
 import { useTranslations } from "next-intl";
+import useTripDialogs from "@/hooks/otherTrips/useTripDialogs";
+import useTrips from "@/hooks/otherTrips/useTrips";
 
 const OtherTripsPage = () => {
   const t = useTranslations("Trips");
-  const [trips, setTrips] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  const [openDetails, setOpenDetails] = useState(false);
-  const [selectedTripId, setSelectedTripId] = useState(null);
-
-  const fetchOtherTrips = async (userId) => {
-    setLoading(true);
-    const q = query(collection(db, "Trips"), where("creatorId", "!=", userId));
-    const querySnapshot = await getDocs(q);
-    const tripsList = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setTrips(tripsList);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        fetchOtherTrips(currentUser.uid);
-      } else {
-        setUser(null);
-        setTrips([]);
-        setLoading(false);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const handleOpenDetails = (tripId) => {
-    setSelectedTripId(tripId);
-    setOpenDetails(true);
-  };
-
-  const handleCloseDetails = () => {
-    setOpenDetails(false);
-  };
+  const { openDetails, selectedTripId, handleOpenDetails, handleCloseDetails } =
+    useTripDialogs();
+  const { trips, loading, user } = useTrips("!=");
 
   const handleJoinRequest = async (tripId) => {
     if (!user) return;
