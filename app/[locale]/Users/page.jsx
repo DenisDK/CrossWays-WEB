@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DataGrid } from "@mui/x-data-grid";
 import Paper from "@mui/material/Paper";
@@ -8,10 +8,9 @@ import Avatar from "@mui/material/Avatar";
 import TextField from "@mui/material/TextField";
 import CircularProgress from "@mui/material/CircularProgress";
 import Header from "@/components/Header/Header";
-import { collection, getDocs } from "firebase/firestore";
-import { db, auth } from "@/lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
 import { useTranslations } from "next-intl";
+import useAuth from "@/hooks/userSerchPage/useAuth";
+import useUsers from "@/hooks/userSerchPage/useUsers";
 
 const columns = [
   {
@@ -39,80 +38,10 @@ const columns = [
 
 const UserSearchPage = () => {
   const t = useTranslations("Search");
-  const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [currentUserId, setCurrentUserId] = useState(null);
   const router = useRouter();
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUserId(user.uid);
-      } else {
-        console.log("Пользователь не авторизован");
-        setLoading(false);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    if (currentUserId) {
-      const fetchUsers = async () => {
-        setLoading(true); // Start loading
-
-        try {
-          const usersCollection = collection(db, "Users");
-          const usersSnapshot = await getDocs(usersCollection);
-          const usersList = usersSnapshot.docs
-            .map((doc) => {
-              const userData = doc.data();
-              const age = userData.birthday
-                ? calculateAge(userData.birthday)
-                : null;
-
-              return {
-                id: doc.id,
-                name: userData.name,
-                nickname: userData.nickname,
-                gender: userData.gender,
-                age: age,
-                avatar: userData.profileImage || "/noavatar.png",
-                isPremium: userData.isPremium,
-                isPrivate: userData.isPrivate,
-              };
-            })
-            .filter((user) => user.id !== currentUserId && !user.isPrivate); // Исключаем текущего пользователя и приватных пользователей
-
-          setUsers(usersList);
-        } catch (error) {
-          console.error("Ошибка при получении пользователей:", error);
-        } finally {
-          setLoading(false); // End loading
-        }
-      };
-
-      fetchUsers();
-    }
-  }, [currentUserId]);
-
-  const calculateAge = (birthday) => {
-    const birthDate = birthday.toDate();
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-
-    return age;
-  };
+  const { currentUserId, loading, setLoading } = useAuth();
+  const { users } = useUsers(currentUserId, setLoading);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
@@ -134,7 +63,6 @@ const UserSearchPage = () => {
           {t("searchTitle")}
         </h2>
         <TextField
-          // label="Search by Nickname"
           label={t("searchTextLabel")}
           variant="outlined"
           fullWidth
