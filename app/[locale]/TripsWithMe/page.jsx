@@ -1,7 +1,6 @@
 "use client";
 
-import Header from "@/components/Header/Header";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   Card,
   CardMedia,
@@ -11,58 +10,17 @@ import {
   Box,
   Button,
 } from "@mui/material";
-import { auth, db } from "@/lib/firebase";
-import { onAuthStateChanged } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import Header from "@/components/Header/Header";
 import TripDetailsDialog from "@/components/PopupForm/TripDetailsDialog";
 import { useTranslations } from "next-intl";
+import useTripsWithMe from "@/hooks/tripsWithMe/useTripsWithMe";
+import useTripDialogs from "@/hooks/tripsWithMe/useTripDialogs";
 
 const TripsWithMePage = () => {
   const t = useTranslations("Trips");
-  const [trips, setTrips] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
-  const [openDetails, setOpenDetails] = useState(false);
-  const [selectedTripId, setSelectedTripId] = useState(null);
-
-  const fetchTripsWithMe = async (userId) => {
-    setLoading(true);
-    const q = query(
-      collection(db, "Trips"),
-      where("participants", "array-contains", userId)
-    );
-    const querySnapshot = await getDocs(q);
-    const tripsList = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    setTrips(tripsList);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        fetchTripsWithMe(currentUser.uid);
-      } else {
-        setUser(null);
-        setTrips([]);
-        setLoading(false);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const handleOpenDetails = (tripId) => {
-    setSelectedTripId(tripId);
-    setOpenDetails(true);
-  };
-
-  const handleCloseDetails = () => {
-    setOpenDetails(false);
-  };
+  const { trips, loading } = useTripsWithMe();
+  const { openDetails, selectedTripId, handleOpenDetails, handleCloseDetails } =
+    useTripDialogs();
 
   return (
     <>
