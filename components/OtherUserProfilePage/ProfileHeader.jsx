@@ -4,25 +4,16 @@ import Rating from "@mui/material/Rating";
 import Button from "@mui/material/Button";
 import { GiLaurelCrown } from "react-icons/gi";
 import { useTranslations } from "next-intl";
+import calculateAge from "@/hooks/otherUserProfilePage/calculateAge";
 
-const ProfileHeader = ({ profileData, isFollowing, handleFollowToggle }) => {
+const ProfileHeader = ({
+  profileData,
+  isFollowing,
+  handleFollowToggle,
+  rating,
+  handleRatingChange,
+}) => {
   const t = useTranslations("Profile");
-
-  const calculateAge = (birthday) => {
-    const birthDate = birthday.toDate();
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-
-    if (
-      monthDiff < 0 ||
-      (monthDiff === 0 && today.getDate() < birthDate.getDate())
-    ) {
-      age--;
-    }
-
-    return age;
-  };
 
   return (
     <div className="flex justify-between max-w-screen-lg">
@@ -39,7 +30,12 @@ const ProfileHeader = ({ profileData, isFollowing, handleFollowToggle }) => {
         <div className="text-xl font-bold">
           {profileData?.nickname || "Nickname"}
         </div>
-        <Rating className="mt-2" name="read-only" value={5} readOnly />
+        <Rating
+          className="mt-2"
+          name="user-rating"
+          value={rating}
+          onChange={handleRatingChange}
+        />
 
         {isFollowing ? (
           <Button

@@ -46,7 +46,6 @@ const TripsPage = () => {
     try {
       await deleteTrip(selectedTripId);
 
-      // Удаление идентификатора поездки из поля activeTravels в документе пользователя
       const userDocRef = doc(db, "Users", user.uid);
       await updateDoc(userDocRef, {
         activeTravels: arrayRemove(selectedTripId),

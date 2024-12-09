@@ -7,6 +7,9 @@ import {
   collection,
   where,
   onSnapshot,
+  addDoc,
+  setDoc,
+  getDocs,
 } from "firebase/firestore";
 
 const useProfileData = (id) => {
@@ -14,6 +17,7 @@ const useProfileData = (id) => {
   const [loading, setLoading] = useState(true);
   const [isFollowing, setIsFollowing] = useState(false);
   const [comments, setComments] = useState([]);
+  const [rating, setRating] = useState(0);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -42,6 +46,16 @@ const useProfileData = (id) => {
         setIsFollowing(true);
       }
 
+      // Fetch user rating
+      const q = query(
+        collection(db, "Users", id, "FeedbackStars"),
+        where("userID", "==", currentUser.uid)
+      );
+      const querySnapshot = await getDocs(q);
+      if (!querySnapshot.empty) {
+        setRating(querySnapshot.docs[0].data().stars);
+      }
+
       setLoading(false);
     };
 
@@ -66,6 +80,36 @@ const useProfileData = (id) => {
     return () => unsubscribe();
   }, [id]);
 
+  const handleRatingChange = async (event, newValue) => {
+    const currentUser = auth.currentUser;
+    if (!currentUser) {
+      console.error("User not logged in");
+      return;
+    }
+
+    try {
+      const q = query(
+        collection(db, "Users", id, "FeedbackStars"),
+        where("userID", "==", currentUser.uid)
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        const ratingDoc = querySnapshot.docs[0].ref;
+        await setDoc(ratingDoc, { stars: newValue, userID: currentUser.uid });
+      } else {
+        await addDoc(collection(db, "Users", id, "FeedbackStars"), {
+          stars: newValue,
+          userID: currentUser.uid,
+        });
+      }
+
+      setRating(newValue);
+    } catch (error) {
+      console.error("Error updating rating: ", error);
+    }
+  };
+
   return {
     profileData,
     loading,
@@ -73,6 +117,8 @@ const useProfileData = (id) => {
     setIsFollowing,
     comments,
     setComments,
+    rating,
+    handleRatingChange,
   };
 };
 

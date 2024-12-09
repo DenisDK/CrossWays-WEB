@@ -30,6 +30,8 @@ const OtherUserProfilePage = () => {
     setIsFollowing,
     comments,
     setComments,
+    rating,
+    handleRatingChange,
   } = useProfileData(id);
   const {
     snackBarOpen,
@@ -95,6 +97,8 @@ const OtherUserProfilePage = () => {
           profileData={profileData}
           isFollowing={isFollowing}
           handleFollowToggle={handleFollowToggle}
+          rating={rating}
+          handleRatingChange={handleRatingChange}
         />
         <CommentsSection
           id={id}
