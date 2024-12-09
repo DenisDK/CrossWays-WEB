@@ -18,6 +18,7 @@ const useProfileData = (id) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [comments, setComments] = useState([]);
   const [rating, setRating] = useState(0);
+  const [averageRating, setAverageRating] = useState(0);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -55,6 +56,15 @@ const useProfileData = (id) => {
       if (!querySnapshot.empty) {
         setRating(querySnapshot.docs[0].data().stars);
       }
+
+      // Fetch average rating
+      const allRatingsSnapshot = await getDocs(
+        collection(db, "Users", id, "FeedbackStars")
+      );
+      const allRatings = allRatingsSnapshot.docs.map((doc) => doc.data().stars);
+      const avgRating =
+        allRatings.reduce((acc, rating) => acc + rating, 0) / allRatings.length;
+      setAverageRating(avgRating);
 
       setLoading(false);
     };
@@ -105,6 +115,15 @@ const useProfileData = (id) => {
       }
 
       setRating(newValue);
+
+      // Update average rating
+      const allRatingsSnapshot = await getDocs(
+        collection(db, "Users", id, "FeedbackStars")
+      );
+      const allRatings = allRatingsSnapshot.docs.map((doc) => doc.data().stars);
+      const avgRating =
+        allRatings.reduce((acc, rating) => acc + rating, 0) / allRatings.length;
+      setAverageRating(avgRating);
     } catch (error) {
       console.error("Error updating rating: ", error);
     }
@@ -119,6 +138,7 @@ const useProfileData = (id) => {
     setComments,
     rating,
     handleRatingChange,
+    averageRating,
   };
 };
 

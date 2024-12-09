@@ -12,6 +12,7 @@ const ProfileHeader = ({
   handleFollowToggle,
   rating,
   handleRatingChange,
+  averageRating,
 }) => {
   const t = useTranslations("Profile");
 
@@ -30,12 +31,16 @@ const ProfileHeader = ({
         <div className="text-xl font-bold">
           {profileData?.nickname || "Nickname"}
         </div>
-        <Rating
-          className="mt-2"
-          name="user-rating"
-          value={rating}
-          onChange={handleRatingChange}
-        />
+        <div className="flex items-center mt-2">
+          <Rating
+            name="user-rating"
+            value={rating}
+            onChange={handleRatingChange}
+          />
+          <span className="ml-2 text-xl font-bold">
+            {averageRating.toFixed(1)}
+          </span>
+        </div>
 
         {isFollowing ? (
           <Button

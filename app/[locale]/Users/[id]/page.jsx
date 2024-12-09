@@ -32,6 +32,7 @@ const OtherUserProfilePage = () => {
     setComments,
     rating,
     handleRatingChange,
+    averageRating,
   } = useProfileData(id);
   const {
     snackBarOpen,
@@ -99,6 +100,7 @@ const OtherUserProfilePage = () => {
           handleFollowToggle={handleFollowToggle}
           rating={rating}
           handleRatingChange={handleRatingChange}
+          averageRating={averageRating}
         />
         <CommentsSection
           id={id}
