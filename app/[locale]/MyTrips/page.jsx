@@ -20,6 +20,8 @@ import DeleteConfirmationDialog from "@/components/PopupForm/DeleteConfirmationD
 import useTripDialogs from "@/hooks/myTrips/useTripDialogs";
 import deleteTrip from "@/lib/deleteTrips";
 import useTrips from "@/hooks/myTrips/useTrips";
+import { doc, updateDoc, arrayRemove } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 const TripsPage = () => {
   const t = useTranslations("Trips");
@@ -43,6 +45,13 @@ const TripsPage = () => {
   const handleConfirmDelete = async () => {
     try {
       await deleteTrip(selectedTripId);
+
+      // Удаление идентификатора поездки из поля activeTravels в документе пользователя
+      const userDocRef = doc(db, "Users", user.uid);
+      await updateDoc(userDocRef, {
+        activeTravels: arrayRemove(selectedTripId),
+      });
+
       fetchTrips(user.uid);
       handleCloseDelete();
     } catch (error) {
