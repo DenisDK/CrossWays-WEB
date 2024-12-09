@@ -44,6 +44,9 @@ import Alert from "@mui/material/Alert";
 import { useTranslations } from "next-intl";
 import { FaTrash } from "react-icons/fa";
 import { Link } from "@/i18n/routing";
+import useComments from "@/hooks/profile/useComments"; // Імпорт нового хука
+import useSubscriptions from "@/hooks/profile/useSubscriptions"; // Імпорт нового хука
+import useAverageRating from "@/hooks/profile/useAverageRating"; // Імпорт нового хука
 
 const ProfilePage = () => {
   const t = useTranslations("Profile");
@@ -64,9 +67,10 @@ const ProfilePage = () => {
   });
   const [profileImage, setProfileImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
-  const [travelCompanions, setTravelCompanions] = useState([]);
   const [isPremium, setIsPremium] = useState(false);
-  const [comments, setComments] = useState([]);
+  const { comments } = useComments(user);
+  const { travelCompanions, handleRemoveCompanion } = useSubscriptions(user);
+  const { averageRating } = useAverageRating(user); // Використання нового хука
   // Для сповіщень
   const [snackBarOpen, setSnackBarOpen] = useState(false);
   const [alertSeverity, setAlertSeverity] = useState("success");
@@ -101,75 +105,6 @@ const ProfilePage = () => {
 
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    if (user) {
-      const fetchTravelCompanions = async () => {
-        try {
-          const userDocRef = doc(db, "Users", user.uid);
-          const userDoc = await getDoc(userDocRef);
-          if (userDoc.exists() && userDoc.data().travelCompanions) {
-            const companionUIDs = userDoc.data().travelCompanions;
-            const companionDataPromises = companionUIDs.map(async (uid) => {
-              const companionDoc = await getDoc(doc(db, "Users", uid));
-              return { uid, ...companionDoc.data() };
-            });
-
-            const companions = await Promise.all(companionDataPromises);
-            setTravelCompanions(companions);
-          }
-        } catch (error) {
-          console.error("Failed to fetch travel companions:", error);
-        }
-      };
-
-      fetchTravelCompanions();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (user) {
-      const fetchComments = async () => {
-        try {
-          const commentsRef = collection(
-            db,
-            "Users",
-            user.uid,
-            "FeedbackComment"
-          );
-          const q = query(commentsRef, where("createdAt", "!=", null));
-          const querySnapshot = await getDocs(q);
-          const commentsData = querySnapshot.docs.map((doc) => ({
-            id: doc.id,
-            ...doc.data(),
-          }));
-          setComments(commentsData);
-        } catch (error) {
-          console.error("Failed to fetch comments:", error);
-        }
-      };
-
-      fetchComments();
-    }
-  }, [user]);
-
-  const handleRemoveCompanion = async (companionUID) => {
-    try {
-      const updatedCompanions = travelCompanions.filter(
-        (comp) => comp.uid !== companionUID
-      );
-      setTravelCompanions(updatedCompanions);
-
-      const userDocRef = doc(db, "Users", user.uid);
-      await setDoc(
-        userDocRef,
-        { travelCompanions: updatedCompanions.map((comp) => comp.uid) },
-        { merge: true }
-      );
-    } catch (error) {
-      console.error("Failed to remove companion:", error);
-    }
-  };
 
   const uploadProfileImage = async () => {
     if (!profileImage) return;
@@ -345,7 +280,12 @@ const ProfilePage = () => {
             <Typography variant="h6" className="font-bold">
               {profileData?.nickname || t("userNickname")}
             </Typography>
-            <Rating className="mt-2" name="read-only" value={5} readOnly />
+            <div className="flex items-center mt-2">
+              <Rating name="read-only" value={averageRating} readOnly />
+              <Typography variant="h6" className="ml-2">
+                {averageRating.toFixed(1)}
+              </Typography>
+            </div>
           </div>
 
           <div className="flex flex-col flex-grow gap-6">
