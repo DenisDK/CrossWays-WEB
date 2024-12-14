@@ -24,6 +24,7 @@ import LanguageSelector from "./LanguageSelector/LanguageSelector";
 import NotificationDrawer from "./NotificationDrawer/NotificationDrawer";
 
 const Header = () => {
+  const t = useTranslations("Navigation");
   const [isUser, setIsUser] = useState(auth.currentUser);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [requests, setRequests] = useState([]);
@@ -185,7 +186,7 @@ const Header = () => {
             <LanguageSelector />
             <Link href="/Join-Now">
               <Button className="bg-[#5C6D67] ml-5" variant="contained">
-                Join Now
+                {t("joinNowButton")}
               </Button>
             </Link>
           </div>

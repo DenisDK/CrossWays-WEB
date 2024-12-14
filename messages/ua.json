@@ -82,6 +82,13 @@
   "LanguageSelector": {
     "selectorTitle": "Мова"
   },
+  "Navigation": {
+    "navigateAboutUs": "Про нас",
+    "navigateMyTrips": "Мої подорожі",
+    "navigateFindTrips": "Знайти подорож",
+    "navigateSearch": "Пошук",
+    "joinNowButton": "Приєднатись"
+  },
   "ProfileInfo": {
     "usersProfile": "Мій профіль",
     "usersTrips": "Мої подорожі",

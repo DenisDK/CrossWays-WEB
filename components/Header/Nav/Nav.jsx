@@ -1,8 +1,10 @@
 import { Link } from "@/i18n/routing";
 import { Button } from "@mui/material";
+import { useTranslations } from "next-intl";
 import React from "react";
 
 const Nav = () => {
+  const t = useTranslations("Navigation");
   return (
     // flex-1 max-w-96
     <nav className="px-3">
@@ -13,7 +15,7 @@ const Nav = () => {
               className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
               variant="text"
             >
-              About
+              {t("navigateAboutUs")}
             </Button>
           </li>
         </Link>
@@ -23,7 +25,7 @@ const Nav = () => {
               className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
               variant="text"
             >
-              My trips
+              {t("navigateMyTrips")}
             </Button>
           </li>
         </Link>
@@ -33,7 +35,7 @@ const Nav = () => {
               className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
               variant="text"
             >
-              Find trips
+              {t("navigateFindTrips")}
             </Button>
           </li>
         </Link>
@@ -43,7 +45,7 @@ const Nav = () => {
               className="text-[#876447] font-bold hover:bg-opacity-10 hover:bg-[#876447]"
               variant="text"
             >
-              Search
+              {t("navigateSearch")}
             </Button>
           </li>
         </Link>

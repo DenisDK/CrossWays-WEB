@@ -83,6 +83,13 @@
   "LanguageSelector": {
     "selectorTitle": "Language"
   },
+  "Navigation": {
+    "navigateAboutUs": "About",
+    "navigateMyTrips": "My trips",
+    "navigateFindTrips": "Find trips",
+    "navigateSearch": "Search",
+    "joinNowButton": "Join Now"
+  },
   "ProfileInfo": {
     "usersProfile": "My profile",
     "usersTrips": "My trips",
