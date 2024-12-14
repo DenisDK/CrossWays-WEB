@@ -421,7 +421,7 @@ const ProfilePage = () => {
         </div>
         <div className="w-full max-w-screen-xl mt-10 px-10">
           <Typography variant="h6" className="font-bold mb-4">
-            Сomments
+            {t("userCommentsSection")}
           </Typography>
           <List>
             {comments.map((comment) => (

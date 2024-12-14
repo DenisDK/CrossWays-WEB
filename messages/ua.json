@@ -63,7 +63,16 @@
     "notLoggedInMessage": "Користувач не авторизований",
     "userDoesntExistMessage": "Поточний користувач не існує",
     "followLimitMessage": "Користувачі без преміум підписки можуть стежити лише за однією особою",
-    "updatingCompanionsUpdateMessage": "Помилка оновлення TravelCompanions:"
+    "updatingCompanionsUpdateMessage": "Помилка оновлення TravelCompanions:",
+    "userCommentsSection": "Комментарі",
+    "userCommentLabel": "Додайте свій комментар",
+    "commentAddingSuccess": "Комментар успішно додано.",
+    "commentAddingError": "Під час додавання коментаря сталася помилка.",
+    "commentDeletionSuccess": "Комментар успішно видалено.",
+    "commentDeletionError": "Під час видалення коментаря сталася помилка.",
+    "commentLabelEmpty": "Поле коментаря пусте. Заповніть поле перед додаванням коментаря.",
+    "commentEditingSuccess": "Комментар успішно Відредаговано.",
+    "commentEditingError": "Під час редагування коментаря сталася помилка."
   },
   "Premium": {
     "statusActive": "Преміум статус активний :)",

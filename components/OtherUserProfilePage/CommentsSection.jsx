@@ -25,7 +25,7 @@ const CommentsSection = ({ id, comments, setComments, showAlert }) => {
 
   const handleCommentSubmit = async () => {
     if (!comment.trim()) {
-      showAlert("emptyCommentMessage");
+      showAlert(t("commentLabelEmpty"));
       return;
     }
 
@@ -46,24 +46,24 @@ const CommentsSection = ({ id, comments, setComments, showAlert }) => {
         createdAt: Timestamp.now(),
       });
       setComment("");
-      showAlert("commentAddedMessage", "success");
+      showAlert(t("commentAddingSuccess"), "success");
     } catch (error) {
-      showAlert("commentSubmitError" + error.message);
+      showAlert(t("commentAddingError") + error.message);
     }
   };
 
   const handleCommentDelete = async (commentId) => {
     const currentUser = auth.currentUser;
     if (!currentUser) {
-      showAlert("notLoggedInMessage");
+      showAlert(t("notLoggedInMessage"));
       return;
     }
 
     try {
       await deleteDoc(doc(db, "Users", id, "FeedbackComment", commentId));
-      showAlert("commentDeletedMessage", "success");
+      showAlert(t("commentDeletionSuccess"), "success");
     } catch (error) {
-      showAlert("commentDeleteError" + error.message);
+      showAlert(t("commentDeletionError") + error.message);
     }
   };
 
@@ -74,13 +74,13 @@ const CommentsSection = ({ id, comments, setComments, showAlert }) => {
 
   const handleSaveEditedComment = async () => {
     if (!editingCommentText.trim()) {
-      showAlert("emptyCommentMessage");
+      showAlert(t("commentLabelEmpty"));
       return;
     }
 
     const currentUser = auth.currentUser;
     if (!currentUser) {
-      showAlert("notLoggedInMessage");
+      showAlert(t("notLoggedInMessage"));
       return;
     }
 
@@ -93,9 +93,9 @@ const CommentsSection = ({ id, comments, setComments, showAlert }) => {
       );
       setEditingCommentId(null);
       setEditingCommentText("");
-      showAlert("commentUpdatedMessage", "success");
+      showAlert(t("commentEditingSuccess"), "success");
     } catch (error) {
-      showAlert("commentUpdateError" + error.message);
+      showAlert(t("commentEditingError") + error.message);
     }
   };
 
@@ -103,7 +103,7 @@ const CommentsSection = ({ id, comments, setComments, showAlert }) => {
     <div className="flex flex-col items-center justify-center">
       <div className="flex items-center mt-6 w-[1024px]">
         <TextField
-          label={"commentLabel"}
+          label={t("userCommentLabel")}
           variant="standard"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
@@ -115,7 +115,7 @@ const CommentsSection = ({ id, comments, setComments, showAlert }) => {
       </div>
 
       <div className="mt-6 w-[1024px]">
-        <h2 className="text-2xl font-bold">{"commentsTitle"}</h2>
+        <h2 className="text-2xl font-bold">{t("userCommentsSection")}</h2>
         {comments.map((comment) => (
           <div
             key={comment.id}

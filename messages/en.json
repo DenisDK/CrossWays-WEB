@@ -63,7 +63,17 @@
     "notLoggedInMessage": "User not logged in",
     "userDoesntExistMessage": "Current user document does not exist",
     "followLimitMessage": "Non-premium users can only follow one person",
-    "updatingCompanionsUpdateMessage": "Error updating travelCompanions: "
+    "updatingCompanionsUpdateMessage": "Error updating travelCompanions: ",
+    "userCommentsSection": "Comments",
+    "userCommentLabel": "Add your comment here!",
+    "userCommentsTitle": "Comments",
+    "commentAddingSuccess": "Comment successfully added.",
+    "commentAddingError": "An error occurred while adding a comment.",
+    "commentDeletionSuccess": "Comment successfully deleted.",
+    "commentDeletionError": "An error occurred while deleting a comment.",
+    "commentLabelEmpty": "The comment field is empty. Please fill in the field before adding a comment.",
+    "commentEditingSuccess": "Comment successfully edited.",
+    "commentEditingError": "An error occurred while editing a comment."
   },
   "Premium": {
     "statusActive": "Premium status is active :)",
